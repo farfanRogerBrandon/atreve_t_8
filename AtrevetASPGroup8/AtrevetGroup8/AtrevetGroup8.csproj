@@ -11,4 +11,12 @@
     <PackageReference Include="Google.Cloud.Firestore" Version="3.6.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Login\" />
+    <Folder Include="Views\Client\" />
+    <Folder Include="Views\Offeror\" />
+    <Folder Include="Views\NewFolder\" />
+    <Folder Include="wwwroot\adminlte\" />
+  </ItemGroup>
+
 </Project>
