@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Firebase.Auth;
+using Firebase.Auth.Providers;
+using FirebaseAdmin.Auth;
 
 namespace AtrevetGroup8.Controllers
 {
@@ -14,23 +17,39 @@ namespace AtrevetGroup8.Controllers
 
 		[HttpPost]
 
-		public IActionResult Index(string username, string password)
+		public async Task<IActionResult> Index(string username, string password)
 		{
-			if(username == "borissejas9@gmail.com" && password == "123")
+            FirebaseAuthConfig config = new FirebaseAuthConfig();
+            config.AuthDomain = "atrevetgroup8.firebaseapp.com";
+			config.ApiKey = "AIzaSyDYKEcmKOovpW1r0w148XkjqbewX3ybAhE";
+			config.Providers = new FirebaseAuthProvider[]
 			{
-				var claims = new List<Claim>
-				{
-					new Claim(ClaimTypes.Name, username),
-					new Claim(ClaimTypes.Role, "Administrador")
-				};
+                new GoogleProvider().AddScopes("email"),
+                    new EmailProvider()
+            };
+            Firebase.Auth.FirebaseAuthClient authClient = new FirebaseAuthClient(config);
 
-				var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-				var principal = new ClaimsPrincipal(identity);
-				HttpContext.SignInAsync(principal);
-				return RedirectToAction("Index", "Home");
-			}
-			ViewBag.Error = "Credenciales invalidas";
-			return View();
-		}
-	}
+            try
+            {
+                var user = await authClient.SignInWithEmailAndPasswordAsync(username, password);
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, username),
+                    new Claim(ClaimTypes.Role, "Administrador")
+                };
+                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var principal = new ClaimsPrincipal(identity);
+                HttpContext.SignInAsync(principal);
+                return RedirectToAction("Index", "Home");
+            }
+            catch (Firebase.Auth.FirebaseAuthException ex)
+            {
+                ViewBag.Error = "Credenciales inválidas";
+                return View();
+
+            }
+        }
+
+        
+    }
 }

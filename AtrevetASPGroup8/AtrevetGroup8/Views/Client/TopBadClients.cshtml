@@ -4,93 +4,73 @@
     ViewData["Title"] = "TopBadClients";
 }
 
-<h1>TopBadClients</h1>
+<h1>Los Peores Usuarios</h1>
 
-<p>
-    <a asp-action="TopClients">Top 20</a>
-</p>
+<div style="padding: 10px">
+    <form id="myForm" method="get">
+        <select name="opcion" id="opcion" class="form-control" onchange="submitForm()">
+            <option> Elige una opcion</option>
+            <option value="TopClients">Top 20</option>
+            <option value="TopBadClients">Pesimos Clientes</option>
+            <option value="ClientRetals">Numero de alquileres x cliente</option>
+            <option value="RejectedOffersClients">Numero de rechazos x clientes</option>
+        </select>
+    </form>
+</div>
 
-<p>
-    <a asp-action="TopBadClients">Pesimos Clientes</a>
-</p>
+<div class="container-xl Stilos-tabla">
+    <table class="table dataTables_wrapper display responsive nowrap">
+        <thead>
+            <tr>
+                <th>
+                    Nombres
+                </th>
+                <th>
+                    Apellidos
+                </th>
+                <th>
+                    Ci
+                </th>
+                <th>
+                    Correo Electronico
+                </th>
+                <th>
+                    Celular
+                </th>
+                <th>
+                    Calificacion
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.names)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.lastnames)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ci)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.mail)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.cellphone)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.rating)
+                    </td>
+                    <td>
+                        <a class="icon-borrar dropdown-item" asp-action="Delete" asp-route-id=""><i class="mr-2 fas fa-trash-alt"></i>Borrar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 
-<p>
-    <a asp-action="ClientRetals">Numero de alquileres x cliente</a>
-</p>
-
-<p>
-    <a asp-action="RejectedOffersClients">Numero de rechazos x clientes</a>
-</p>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.names)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.lastnames)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.password)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ci)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.mail)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.cellphone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.rating)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.role)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.state)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.names)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.lastnames)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.password)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ci)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.mail)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.cellphone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.rating)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.role)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.state)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+</div>
