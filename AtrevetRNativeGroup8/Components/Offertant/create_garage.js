@@ -5,6 +5,7 @@ import MapView, { MapMarker, Marker } from 'react-native-maps';
 import MapMaker from '../../Tools/Maper';
 
 const Create_Garage = () => {
+    
     const [address, setAddress] = useState('');
     const [cost, setCost] = useState('');
     const [height, setHeight] = useState('');
