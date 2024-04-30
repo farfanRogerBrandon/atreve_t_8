@@ -9,7 +9,17 @@ const stylesNf = StyleSheet.create({
     borderColor: 'black', // Color del borde
     
   },
+  container2: {
+    backgroundColor: '#fff6ed', 
   
+    borderBottomWidth:3,
+    padding:7
+    
+  },
+  horizontal:{
+    flexDirection:"row",
+    width:"100%"
+},
   title: {
     fontSize: 20,
     marginBottom: 20,

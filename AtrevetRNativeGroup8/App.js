@@ -1,12 +1,18 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import MyStatusBar from './Components/myStatus';
+import Calendar from './Components/Client/Calendar';
+import TimePickerExample from './Components/Client/TimePickerExample';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    
+    <>
+    <MyStatusBar>
+
+    </MyStatusBar>
+    <Calendar></Calendar>
+    </>
   );
 }
 
