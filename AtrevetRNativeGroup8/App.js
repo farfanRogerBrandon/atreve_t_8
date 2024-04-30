@@ -20,7 +20,7 @@ export default function App() {
   function MyStack(){
     return(
       <Stack.Navigator>
-        <Stack.Screen name='ListCars' component={ListCars} />
+        <Stack.Screen name='ListCars' component={ListGarages} />
         <Stack.Screen name='CreateCar' component={Create_Car} />
         <Stack.Screen name='EditCar' component={Edit_Car} />
         <Stack.Screen name='ListGarages' component={ListGarages} />
