@@ -1,17 +1,43 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'; // Importar funciones de autenticación de Firebase
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import { appFirebase } from './Data/firebaseConfig'; // Importar la configuración de Firebase
 
+const auth = getAuth(appFirebase); // Obtener la instancia de autenticación de Firebase
+const db = getFirestore(appFirebase);
 
-    const LoginScreen = ({ onNavigate }) => {
-        const [email, setEmail] = useState('');
-        const [password, setPassword] = useState('');
+const LoginScreen = ({ onNavigate }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleLogin = () => {
-    // Implement your login logic here
-    console.log(email, password);
+  const handleLogin = async () => {
+    try {
+      // Iniciar sesión con el correo electrónico y la contraseña proporcionados
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      
+      // Obtener el rol del usuario desde la base de datos
+      const userDoc = await getDoc(doc(db, 'user', user.uid));
+      const userData = userDoc.data();
+      const userRole = userData.role;
+
+      // Redirigir al usuario según su rol
+      if (userRole === 'client') {
+        console.log('Redirigir a la página del Cliente');
+      } else if (userRole === 'offeror') {
+        console.log('Redirigir a la página del Ofertante');
+      } else {
+        console.log('Rol desconocido');
+      }
+    } catch (error) {
+      // Manejar errores de inicio de sesión
+      console.error('Error al iniciar sesión:', error);
+      setErrorMessage('Credenciales inválidas. Por favor, inténtalo de nuevo.');
+    }
   };
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Hola!</Text>
@@ -105,4 +131,5 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
 });
+
 export default LoginScreen;

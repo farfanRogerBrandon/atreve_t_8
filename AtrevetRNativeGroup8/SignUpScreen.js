@@ -1,8 +1,11 @@
-// SignUpScreen.js
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView, Modal, Keyboard } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView, Modal, Keyboard, Alert } from 'react-native';
+import {createuser} from './Data/usersdata';
+
+
 
 const SignUpScreen = () => {
+
   const [formData, setFormData] = useState({
     ci: '',
     lastnames: '',
@@ -14,6 +17,7 @@ const SignUpScreen = () => {
     role: '', // Aquí se almacenará el valor seleccionado del Picker
     state: 1
   });
+  const [isValidForm, setIsValidForm] = useState(false);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -23,35 +27,28 @@ const SignUpScreen = () => {
   };
 
   const handleSubmit = () => {
-    // Convertir los valores de CI y número de teléfono a texto antes de enviarlos a la base de datos
-    const ciValue = formData.ci.toString();
-    const cellphoneValue = formData.cellphone.toString();
-
     // Formatear nombres y apellidos eliminando espacios al principio y al final
     const formattedNames = formData.names.trim();
     const formattedLastnames = formData.lastnames.trim();
 
-
     // Actualizar el estado con los nombres y apellidos formateados
     setFormData(prevState => ({
       ...prevState,
-      ci: ciValue,
-      cellphone: cellphoneValue,
       names: formattedNames,
       lastnames: formattedLastnames
     }));
 
-    // Aquí va la lógica para manejar la creación de la cuenta
-    console.log({
-      ...formData,
-      ci: ciValue,
-      cellphone: cellphoneValue,
-      names: formattedNames,
-      lastnames: formattedLastnames
-    });
-
-    // Limpiar el teclado después de enviar el formulario
-    Keyboard.dismiss();
+    // Llamar a la función de registro de usuario
+    createuser(formData)
+      .then(() => {
+        // Limpiar el teclado después de enviar el formulario
+        Keyboard.dismiss();
+        // Aquí puedes manejar la redirección o mostrar un mensaje de éxito
+      })
+      .catch(error => {
+        // Manejar errores de registro
+        console.error("Error registrando usuario:", error);
+      });
   };
 
   return (
@@ -68,6 +65,7 @@ const SignUpScreen = () => {
                          key === 'mail' ? 'Ingresa tu correo electrónico' :
                          key === 'names' ? 'Ingresa tus nombres' :
                          key === 'password' ? 'Ingresa tu contraseña' : ''}
+                         
             value={formData[key]}
             onChangeText={(text) => {
                 if (key === 'ci' || key === 'cellphone') {
@@ -100,10 +98,10 @@ const SignUpScreen = () => {
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <TouchableOpacity onPress={() => handleRoleSelection('Cliente')}>
+            <TouchableOpacity onPress={() => handleRoleSelection('client')}>
               <Text style={styles.modalItem}>Cliente</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleRoleSelection('Ofertante')}>
+            <TouchableOpacity onPress={() => handleRoleSelection('offeror')}>
               <Text style={styles.modalItem}>Ofertante</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setIsModalVisible(false)}>
