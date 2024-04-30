@@ -1,10 +1,22 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+// App.js
+import React, { useState } from 'react';
+import { View, StatusBar, StyleSheet } from 'react-native';
+import LoginScreen from './LoginScreen';
+import SignUpScreen from './SignUpScreen';
 
 export default function App() {
+  const [currentScreen, setCurrentScreen] = useState('login');
+
+  const handleNavigation = () => {
+    setCurrentScreen('signup');
+  };
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+      {currentScreen === 'login' ?
+        <LoginScreen onNavigate={handleNavigation} /> :
+        <SignUpScreen />
+      }
       <StatusBar style="auto" />
     </View>
   );
@@ -14,7 +26,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
   },
 });
