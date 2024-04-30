@@ -28,7 +28,7 @@ const Create_Car = (props) => {
             Alert.alert('Registrado', 'El auto se registro con exito');
             console.log('Car inserted successfully:', car);
             props.navigation.navigate('ListCars');
-        } catch (error) {
+        } catch {
             Alert.alert('Error', 'El auto no se registro');
             console.error('Error inserting car:', error);
         }

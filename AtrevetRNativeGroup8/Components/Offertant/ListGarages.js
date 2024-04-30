@@ -19,7 +19,7 @@ const ListGarages = (props) => {
     const renderItem = ({item, index}) => {
         return(
             <View style={ListGaragesStyles.row}>
-                <Text style={[ListGaragesStyles.cell, {width: 150}]}>{item.data().address}</Text>
+                <Text style={[ListGaragesStyles.cell, {width: 200}]}>{item.data().address}</Text>
                 <Text style={[ListGaragesStyles.cell, {width: 90}]}>{item.data().height}</Text>
                 <Text style={[ListGaragesStyles.cell, {width: 90}]}>{item.data().width}</Text>
                 <Text style={[ListGaragesStyles.cell, {width: 90}]}>{item.data().length}</Text>
@@ -47,7 +47,7 @@ const ListGarages = (props) => {
         <ScrollView horizontal>
             <View style={ListGaragesStyles.listContainer}>
                 <View style={ListGaragesStyles.header}>
-                    <Text style={[ListGaragesStyles.headerText, {width: 150}]}>Direccion</Text>
+                    <Text style={[ListGaragesStyles.headerText, {width: 200}]}>Direccion</Text>
                     <Text style={[ListGaragesStyles.headerText, {width: 90}]}>Altura</Text>
                     <Text style={[ListGaragesStyles.headerText, {width: 90}]}>Ancho</Text>
                     <Text style={[ListGaragesStyles.headerText, {width: 90}]}>Largo</Text>

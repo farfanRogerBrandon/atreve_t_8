@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView  } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import Create_GarageStyles from '../../Styles/create_garageStyles';
 import MapView, { MapMarker, Marker } from 'react-native-maps';
 import MapMaker from '../../Tools/Maper';
@@ -21,10 +21,11 @@ const Create_Garage = (props) => {
 
     const mapMaker = new MapMaker();
 
-    const handleMapPress = (event) => {
+    const handleMapPress = async(event) => {
         const { latitude, longitude } = event.nativeEvent.coordinate;
         setLocation(event.nativeEvent.coordinate);
-        setAddress(mapMaker.getAddressFromCoordinates(latitude, longitude));
+        const displayName = await mapMaker.getAddressFromCoordinates(latitude, longitude)
+        setAddress(displayName);
 
         console.log('Latitude:', latitude);
         console.log('Longitude:', longitude);
@@ -53,9 +54,9 @@ const Create_Garage = (props) => {
             Alert.alert('Registrado', 'El garaje se registro con exito');
             console.log('Garage inserted successfully:', garage);
             props.navigation.navigate('ListGarages');
-        } catch (error) {
+        } catch {
             Alert.alert('Error', 'El garaje no se registro');
-            console.error('Error inserting car:', error);
+            console.error('Error inserting garage:', error);
         }
 
         console.log('Submitted:', { address, cost, height, width, length, description, location });
