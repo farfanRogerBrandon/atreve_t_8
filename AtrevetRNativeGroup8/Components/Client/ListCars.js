@@ -4,7 +4,7 @@ import { View, Text, TextInput, TouchableOpacity, ScrollView, FlatList } from 'r
 import ListCarStyles from '../../Styles/ListCarsStyles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const ListCars = () => {
+const ListCars = (props) => {
     const [data, setData] = useState([
         {"licensePlate": "123abc", "height": "4", "width": "3", "lenght": "2.6", "description": "Auto viejo rojo"},
         {"licensePlate": "433gfd", "height": "5", "width": "3.4", "lenght": "3", "description": "Bmw x5"},
@@ -34,9 +34,11 @@ const ListCars = () => {
         <View style={ListCarStyles.headerTopBar}>
             <Text style={ListCarStyles.headerTopBarTitle}>Mis autos</Text>
         </View>
-        <TouchableOpacity style={ListCarStyles.addButton}>
+
+        <TouchableOpacity style={ListCarStyles.addButton} onPress={()=>props.navigation.navigate('CreateCar')}>
             <Text style={ListCarStyles.addButtonText}>Agregar Auto</Text>
         </TouchableOpacity>
+        
         <ScrollView horizontal>
             <View style={ListCarStyles.listContainer}>
                 <View style={ListCarStyles.header}>

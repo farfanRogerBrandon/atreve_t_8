@@ -6,13 +6,13 @@ const Create_CarStyles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        justifyContent: 'center',
         paddingHorizontal: 20,
         backgroundColor: '#FFE3B3',
     },
     heading: {
         fontSize: 30,
         marginBottom: 20,
+        marginTop: 20,
     },
     input: {
         width: '100%',
@@ -48,8 +48,7 @@ const Create_CarStyles = StyleSheet.create({
     },
     scrollViewContent: {
         width: '100%',
-        height: '150%',
-        
+        height: '100%',
     },
 });
 

@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-const ListCarStyles = StyleSheet.create({
+const ListGaragesStyles = StyleSheet.create({
     container: {
         flex: 1,
         paddingHorizontal: 20,
@@ -69,4 +69,4 @@ const ListCarStyles = StyleSheet.create({
     },
 });
 
-export default ListCarStyles;
+export default ListGaragesStyles;

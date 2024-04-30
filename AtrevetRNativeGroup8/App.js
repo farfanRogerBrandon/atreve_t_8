@@ -10,6 +10,8 @@ import Rating_InterfaceClient from './Components/Client/rating_interfaceClient.j
 import Rating_InterfaceOffertant from './Components/Offertant/rating_interfaceOffertant.js';
 import ListCars from './Components/Client/ListCars.js';
 import Edit_Car from './Components/Client/Edit_Car.js';
+import Edit_Garage from './Components/Offertant/Edit_Garage.js';
+import ListGarages from './Components/Offertant/ListGarages.js';
 
 export default function App() {
 
@@ -18,9 +20,12 @@ export default function App() {
   function MyStack(){
     return(
       <Stack.Navigator>
-        <Stack.Screen name='List' component={ListCars} />
-        <Stack.Screen name='Create' component={Create_Car} />
-        <Stack.Screen name='Edit' component={Edit_Car} />
+        <Stack.Screen name='ListCars' component={ListCars} />
+        <Stack.Screen name='CreateCar' component={Create_Car} />
+        <Stack.Screen name='EditCar' component={Edit_Car} />
+        <Stack.Screen name='ListGarages' component={ListGarages} />
+        <Stack.Screen name='CreateGarage' component={Create_Garage} />
+        <Stack.Screen name='EditGarage' component={Edit_Garage} />
       </Stack.Navigator>
     )
   }
