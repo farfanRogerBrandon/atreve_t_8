@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import Create_CarStyles from '../../Styles/create_carStyles';
 
-const Create_Car = () => {
+const Edit_Car = () => {
     const [licensePlate, setLicensePlate] = useState('');
     const [height, setHeight] = useState('');
     const [width, setWidth] = useState('');
@@ -16,10 +16,10 @@ const Create_Car = () => {
     };
 
   return (
-    <ScrollView contentContainerStyle={Create_CarStyles.scrollViewContent}>
+    <ScrollView contentContainerStyle={Create_GarageStyles.scrollViewContent}>
         <View style={Create_CarStyles.container}>
             <View style={Create_CarStyles.title_container}>
-                <Text style={Create_CarStyles.heading}>Agrega tu Auto</Text>
+                <Text style={Create_CarStyles.heading}>Modifica tu Auto</Text>
             </View>
 
             <Text style={[Create_CarStyles.label]}>Placa:</Text>
@@ -78,4 +78,4 @@ const Create_Car = () => {
   );
 };
 
-export default Create_Car;
+export default Edit_Car;
