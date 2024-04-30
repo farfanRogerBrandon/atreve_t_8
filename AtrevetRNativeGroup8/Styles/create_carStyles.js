@@ -46,6 +46,11 @@ const Create_CarStyles = StyleSheet.create({
     label: {
         marginBottom: 5,
     },
+    scrollViewContent: {
+        width: '100%',
+        height: '150%',
+        
+    },
 });
 
 export default Create_CarStyles;

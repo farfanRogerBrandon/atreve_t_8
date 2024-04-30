@@ -6,11 +6,11 @@ const Create_GarageStyles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        justifyContent: 'center',
         paddingHorizontal: 20,
         backgroundColor: '#FFE3B3',
     },
     heading: {
+        marginTop: 20,
         fontSize: 30,
         marginBottom: 20,
     },
@@ -28,7 +28,8 @@ const Create_GarageStyles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 15,
-        marginTop: 10,
+        marginTop: 20,
+        marginBottom: 20,
     },
     buttonText: {
         color: '#000',
@@ -45,6 +46,11 @@ const Create_GarageStyles = StyleSheet.create({
     },
     label: {
         marginBottom: 5,
+    },
+    scrollViewContent: {
+        width: '100%',
+        height: '150%',
+        
     },
 });
 
