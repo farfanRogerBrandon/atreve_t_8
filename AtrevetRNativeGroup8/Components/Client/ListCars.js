@@ -19,8 +19,8 @@ const ListCars = (props) => {
     const renderItem = ({item, index}) => {
         return(
             <View style={ListCarStyles.row}>
-                <Text style={[ListCarStyles.cell, {width: 100}]}>{item.data().licensePlate}</Text>
-                <Text style={[ListCarStyles.cell, {width: 90}]}>{item.data().height}</Text>
+                <Text style={[ListCarStyles.cell, {width: 100}]}>{item.data().plate}</Text>
+                <Text style={[ListCarStyles.cell, {width: 90}]}>{item.data().high}</Text>
                 <Text style={[ListCarStyles.cell, {width: 90}]}>{item.data().width}</Text>
                 <Text style={[ListCarStyles.cell, {width: 90}]}>{item.data().lenght}</Text>
                 <Text style={[ListCarStyles.cell, {width: 150}]}>{item.data().description}</Text>

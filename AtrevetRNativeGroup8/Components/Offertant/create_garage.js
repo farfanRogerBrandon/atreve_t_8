@@ -3,8 +3,9 @@ import { View, Text, TextInput, TouchableOpacity, ScrollView  } from 'react-nati
 import Create_GarageStyles from '../../Styles/create_garageStyles';
 import MapView, { MapMarker, Marker } from 'react-native-maps';
 import MapMaker from '../../Tools/Maper';
+import { insertGarage } from '../../Data/GarageInsert';
 
-const Create_Garage = () => {
+const Create_Garage = (props) => {
     
     const [address, setAddress] = useState('');
     const [cost, setCost] = useState('');
@@ -14,6 +15,9 @@ const Create_Garage = () => {
     const [location, setLocation] = useState(null);
     const [description, setDescription] = useState('');
     const [spaces, setSpaces] = useState('');
+    const [avialability, setavialability] = useState('libre');
+    const [rating, setRating] = useState(0);
+    const [state, setState] = useState(1);
 
     const mapMaker = new MapMaker();
 
@@ -27,9 +31,33 @@ const Create_Garage = () => {
         console.log('Address:', address);
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async() => {
         // Handle submission logic here
         // For example, you can send the garage data to a server
+        const garage = {
+            address,
+            avialability,
+            cost,
+            description,
+            height,
+            width,
+            length,
+            location,
+            rating,
+            spaces,
+            state
+        };
+
+        try {
+            await insertGarage(garage);
+            Alert.alert('Registrado', 'El garaje se registro con exito');
+            console.log('Garage inserted successfully:', garage);
+            props.navigation.navigate('ListGarages');
+        } catch (error) {
+            Alert.alert('Error', 'El garaje no se registro');
+            console.error('Error inserting car:', error);
+        }
+
         console.log('Submitted:', { address, cost, height, width, length, description, location });
     };
 

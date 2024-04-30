@@ -7,7 +7,7 @@ const db = getFirestore(appFirebase);
 const getCars = async (id) => {
     const data = [];
     const cars = collection(db,"car");
-    const q = query(cars,where("state","==",1),where("clientId","==",id));
+    const q = query(cars,where("state","==",1)); //,where("clientId","==",id)
 
     const xG = await getDocs(q);
     xG.forEach(g => {

@@ -1,18 +1,39 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import Create_CarStyles from '../../Styles/create_carStyles';
+import { insertCars } from '../../Data/CarsInsert';
 
-const Create_Car = () => {
-    const [licensePlate, setLicensePlate] = useState('');
-    const [height, setHeight] = useState('');
+const Create_Car = (props) => {
+    const [plate, setLicensePlate] = useState('');
+    const [high, setHeight] = useState('');
     const [width, setWidth] = useState('');
-    const [length, setLength] = useState('');
+    const [lenght, setLength] = useState('');
     const [description, setDescription] = useState('');
+    const [state, setState] = useState(1);
 
-    const handleSubmit = () => {
+    const handleSubmit = async() => {
         // Handle submission logic here
         // For example, you can send the car data to a server
-        console.log('Submitted:', { licensePlate, height, width, length, description });
+        const car = {
+            plate,
+            high,
+            width,
+            lenght,
+            description,
+            state
+        };
+
+        try {
+            await insertCars(car);
+            Alert.alert('Registrado', 'El auto se registro con exito');
+            console.log('Car inserted successfully:', car);
+            props.navigation.navigate('ListCars');
+        } catch (error) {
+            Alert.alert('Error', 'El auto no se registro');
+            console.error('Error inserting car:', error);
+        }
+
+        console.log('Submitted:', { plate, high, width, lenght, description });
     };
 
   return (
@@ -26,7 +47,7 @@ const Create_Car = () => {
             <TextInput
                 style={Create_CarStyles.input}
                 placeholder="Placa"
-                value={licensePlate}
+                value={plate}
                 onChangeText={text => setLicensePlate(text)}
             />
 
@@ -34,7 +55,7 @@ const Create_Car = () => {
             <TextInput
                 style={Create_CarStyles.input}
                 placeholder="Altura del auto"
-                value={height}
+                value={high}
                 onChangeText={text => setHeight(text)}
                 keyboardType="numeric"
             />
@@ -52,7 +73,7 @@ const Create_Car = () => {
             <TextInput
                 style={Create_CarStyles.input}
                 placeholder="Largo del Auto"
-                value={length}
+                value={lenght}
                 onChangeText={text => setLength(text)}
                 keyboardType="numeric"
             />
