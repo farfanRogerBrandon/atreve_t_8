@@ -1,0 +1,103 @@
+﻿@model IEnumerable<(AtrevetGroup8.Models.User, int)>
+
+@{
+    ViewData["Title"] = "ClientRetals";
+}
+
+<h1>ClientRetals</h1>
+
+<p>
+    <a asp-action="TopClients">Top 20</a>
+</p>
+
+<p>
+    <a asp-action="TopBadClients">Pesimos Clientes</a>
+</p>
+
+<p>
+    <a asp-action="ClientRetals">Numero de alquileres x cliente</a>
+</p>
+
+<p>
+    <a asp-action="RejectedOffersClients">Numero de rechazos x clientes</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Item1.names)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item1.lastnames)
+            </th>
+            <th>
+                Number of Rentals
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item1.password)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item1.ci)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item1.mail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item1.cellphone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item1.rating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item1.role)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item1.state)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Item1.names)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Item1.lastnames)
+                </td>
+                <td>
+                    @item.Item2
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Item1.password)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Item1.ci)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Item1.mail)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Item1.cellphone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Item1.rating)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Item1.role)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Item1.state)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { /* id=item.Item1.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.Item1.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.Item1.PrimaryKey */ })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

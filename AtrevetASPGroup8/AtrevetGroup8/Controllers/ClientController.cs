@@ -35,5 +35,23 @@ namespace AtrevetGroup8.Controllers
 
             return View(clients);
         }
+
+        public async Task<IActionResult> ClientRetals()
+        {
+            UserImpl user = new UserImpl();
+
+            var clients = await user.NroRentals();
+
+            return View(clients);
+        }
+
+        public async Task<IActionResult> RejectedOffersClients()
+        {
+            UserImpl user = new UserImpl();
+
+            var clients = await user.NroRejectedOffers();
+
+            return View(clients);
+        }
     }
 }
