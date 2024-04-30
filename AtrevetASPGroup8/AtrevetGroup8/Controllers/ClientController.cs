@@ -1,4 +1,5 @@
 ﻿using AtrevetGroup8.Models;
+using AtrevetGroup8.Utils;
 using Google.Cloud.Firestore;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -6,7 +7,10 @@ using System.Threading.Tasks;
 
 namespace AtrevetGroup8.Controllers
 {
-    public class ClientController : Controller
+
+	[AutorizacionRequerida]
+
+	public class ClientController : Controller
     {
 
         public async Task<IActionResult> Index()

@@ -13,7 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Login\" />
     <Folder Include="wwwroot\adminlte\" />
   </ItemGroup>
 
