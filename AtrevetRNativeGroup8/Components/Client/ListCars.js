@@ -24,11 +24,11 @@ const ListCars = (props) => {
     const renderItem = ({item, index}) => {
         return(
             <View style={ListCarStyles.row}>
-                <Text style={[ListCarStyles.cell, {width: 100}]}>{item.data().plate}</Text>
-                <Text style={[ListCarStyles.cell, {width: 90}]}>{item.data().high}</Text>
-                <Text style={[ListCarStyles.cell, {width: 90}]}>{item.data().width}</Text>
-                <Text style={[ListCarStyles.cell, {width: 90}]}>{item.data().lenght}</Text>
-                <Text style={[ListCarStyles.cell, {width: 150}]}>{item.data().description}</Text>
+                <Text style={[ListCarStyles.cell, {width: 100}]}>{item.plate}</Text>
+                <Text style={[ListCarStyles.cell, {width: 90}]}>{item.high}</Text>
+                <Text style={[ListCarStyles.cell, {width: 90}]}>{item.width}</Text>
+                <Text style={[ListCarStyles.cell, {width: 90}]}>{item.lenght}</Text>
+                <Text style={[ListCarStyles.cell, {width: 150}]}>{item.description}</Text>
                 <Text style={[ListCarStyles.cell, {width: 90}]}>
                     <Icon style={ListCarStyles.edit} name="edit" size={30} />
                     <Icon style={ListCarStyles.delete} name="trash" size={30} />

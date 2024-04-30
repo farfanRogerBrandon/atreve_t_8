@@ -24,13 +24,13 @@ const ListGarages = (props) => {
     const renderItem = ({item, index}) => {
         return(
             <View style={ListGaragesStyles.row}>
-                <Text style={[ListGaragesStyles.cell, {width: 200}]}>{item.data().address}</Text>
-                <Text style={[ListGaragesStyles.cell, {width: 90}]}>{item.data().height}</Text>
-                <Text style={[ListGaragesStyles.cell, {width: 90}]}>{item.data().width}</Text>
-                <Text style={[ListGaragesStyles.cell, {width: 90}]}>{item.data().length}</Text>
-                <Text style={[ListGaragesStyles.cell, {width: 90}]}>{item.data().cost}</Text>
-                <Text style={[ListGaragesStyles.cell, {width: 100}]}>{item.data().spaces}</Text>
-                <Text style={[ListGaragesStyles.cell, {width: 150}]}>{item.data().description}</Text>
+                <Text style={[ListGaragesStyles.cell, {width: 200}]}>{item.address}</Text>
+                <Text style={[ListGaragesStyles.cell, {width: 90}]}>{item.height}</Text>
+                <Text style={[ListGaragesStyles.cell, {width: 90}]}>{item.width}</Text>
+                <Text style={[ListGaragesStyles.cell, {width: 90}]}>{item.length}</Text>
+                <Text style={[ListGaragesStyles.cell, {width: 90}]}>{item.cost}</Text>
+                <Text style={[ListGaragesStyles.cell, {width: 100}]}>{item.spaces}</Text>
+                <Text style={[ListGaragesStyles.cell, {width: 150}]}>{item.description}</Text>
                 <Text style={[ListGaragesStyles.cell, {width: 150}]}>
                     <Icon style={ListGaragesStyles.edit} name="edit" size={30} />
                     <Icon style={ListGaragesStyles.delete} name="trash" size={30} />

@@ -9,9 +9,9 @@ const getGarages = async (id) => {
     const garages = collection(db,"grage");
     const q = query(garages,where("state","==",1)); //,where("ofid","==",id)
 
-    const xG = await getDocs(q);
-    xG.forEach(g => {
-        data.push(g)
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+        data.push({ id: doc.id, ...doc.data() }); // Include the ID along with the data
     });
 
     return data;
