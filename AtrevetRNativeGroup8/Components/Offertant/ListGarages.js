@@ -6,14 +6,19 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { getGarages } from '../../Data/GaragesGet';
 
 const ListGarages = (props) => {
-    const [data, setData] = useState([
-        
-    ]);
+    const [data, setData] = useState([]);
 
-    useEffect(async() => {
-        let newData = await getGarages("Iq3zIGu8BQtN3d0Gcuhh")
-        setData(newData);
-        console.log(newData);
+    useEffect(() => {
+        const getGaragesList = async()=>{
+            try {
+                let newData = await getGarages("Iq3zIGu8BQtN3d0Gcuhh")
+                setData(newData);
+                console.log(newData);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        getGaragesList()
     },[])
 
     const renderItem = ({item, index}) => {
