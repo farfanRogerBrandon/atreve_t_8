@@ -15,8 +15,10 @@ const GetTimeTable=async(idGarage)=>{
         
         let dates ={
             timeTable: myTime.data().timeTable,
-            specialDates: myTime.data().specialDates
+              specialDates: myTime.data().specialDates
         }
+
+        console.log(dates.specialDates[0]. day)
         return dates;
     
     } catch (error) {
@@ -33,14 +35,15 @@ const GetTimeTable=async(idGarage)=>{
 
 }
 
-const SaveCalendar = async (id, timeTable)=>{ //luego el otro
+const SaveCalendar = async (id, timeTable, s)=>{ //luego el otro
     try {
     
 
         let myTime =   doc(db, "grage", id);
         
         await updateDoc(myTime,{
-            timeTable:timeTable
+            timeTable:timeTable,
+            specialDates:s
         })
       
         return true;
