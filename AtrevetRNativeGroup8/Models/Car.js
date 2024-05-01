@@ -8,5 +8,18 @@ class Car {
         this.plate = plate;
         this.cID = cID;
     }
+
+
+    toJSON() {
+        return {
+            id: this.id,
+            height: this.height,
+            length: this.length,
+            width: this.width,
+            description: this.description,
+            plate: this.plate,
+            cID: this.cID
+        };
+    }
 }
 export default Car;

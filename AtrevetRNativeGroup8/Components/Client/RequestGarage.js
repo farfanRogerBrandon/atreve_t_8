@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, Touchable, TouchableOpacity, Modal, Button, Alert, Image, ScrollView } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Touchable, TouchableOpacity, Modal, Button, Alert, Image, ScrollView, TextInput } from 'react-native';
 import { stylesNf } from '../../Styles/FormOffersStyles';
 import { GetTimeTable, SaveCalendar } from '../../Data/CalendarGarageData';
 import { RFValue } from 'react-native-responsive-fontsize';
@@ -8,7 +8,7 @@ import stylesMap from "../../Styles/GarageRequest"
 //import DateTimePicker from 'react-native-modal-datetime-picker';
 import DateTimePicker from "@react-native-community/datetimepicker"
 import MapView, { Marker } from 'react-native-maps';
-import { VerifyReservesByDate, getAllGarages, getCarsByUser } from '../../Data/GetAllGarages';
+import { SendOffer, VerifyReservesByDate, getAllGarages, getCarsByUser } from '../../Data/GetAllGarages';
 import { GetDateTraducedWithOutH, compareDate, getDATEfromTime, getIINDEX } from '../../Tools/TransformDate';
 import { FontAwesome } from '@expo/vector-icons';
 
@@ -51,8 +51,11 @@ const RequestGarage = () => {
 
     const [modal2Visible, setModal2Visible] = useState(false);
 
+    const [isAvailable, setAvailable] = useState(false);
 
 
+    const [priceo, setPriceo] = useState("");
+    const [msg, setMsg] = useState("");
 
 
 
@@ -192,55 +195,118 @@ const RequestGarage = () => {
 
 
 
-const verifyAvailability = async()=>{
-    
-    if(garage.data().height < selectedCar.height ||garage.data().width < selectedCar.width || garage.data().length < selectedCar.length ){
-        Alert.alert("No disponible", "Las dimensiones del vehículo son mayores a las del espacio del garaje");
+    const verifyAvailability = async () => {
+        //verifiquemos si entra, lugo si hay reservas que choquen, luego si el periodo entra en medio de periodos disponible, verificar día especial
+        if (garage.data().height < selectedCar.height || garage.data().width < selectedCar.width || garage.data().length < selectedCar.length) {
+            Alert.alert("No disponible", "Las dimensiones del vehículo son mayores a las del espacio del garaje");
 
-        return;
+            return;
 
-    }
-    let start = parseFloat(selectedStartTime.replace(":", ""));
-    let end = parseFloat(selectedENDTime.replace(":", ""));
-    //garage.data().
-    let isSpecialDay= false;
-
-    /*for (const item of specialDays) {
-        let dateC = getDATEfromTime(item.day);
-        let res = compareDate(dateC, sDate);
-        if (res) {
-            isSpecialDay = true;
-            break;
         }
-    */
-       
-    await VerifyReservesByDate(sDate, start , end, garage.id);
-    return;
-    
-    let indexSpecialDay = specialDays.findIndex (x=> compareDate( getDATEfromTime(x.day),sDate)==true )
-    
-    
-    if(indexSpecialDay!=-1){
-        console.log("ES DÏA ESPECIAL: ", indexSpecialDay);
+        let start = parseFloat(selectedStartTime.replace(":", ""));
+        let end = parseFloat(selectedENDTime.replace(":", ""));
+
+
+
+        let n = await VerifyReservesByDate(sDate, start, end, garage.id);
+
+        if (n >= garage.data().spaces) {
+            Alert.alert("No disponible", "EL garaje ya cuenta con " + n + " reservas en el periodo seleccionado, lo que supera el número de espacios disponibles");
+
+            return;
+        }
+
+
+
+        let indexSpecialDay = specialDays.findIndex(x => compareDate(getDATEfromTime(x.day), sDate) == true)
+
+        let isEnable = false;
+        if (indexSpecialDay != -1) {
+            console.log("ES DÏA ESPECIAL: ", indexSpecialDay);
+
+            specialDays[indexSpecialDay].periods.forEach(p => {
+                if ((start >= p.startHour && end <= p.endHour)) {
+                    isEnable = true;
+                }
+            });
+
+            if (!isEnable) {
+                Alert.alert("No disponible", "La fecha ingresada corresponde a un día especial del garaje, dichos periodos no cumplen con sus requisitos que acaba de especificar, verifique lo periodos de disponibilidad del garaje");
+                return;
+            }
+        }
+        else {
+
+            let dayIndex = getIINDEX(sDate);
+
+
+            console.log("No es especial ", dayIndex);
+
+            daysData[dayIndex].periods.forEach(p => {
+                if ((start >= p.startHour && end <= p.endHour)) {
+                    isEnable = true;
+                }
+            })
+            if (!isEnable) {
+                Alert.alert("No disponible", "El garaje no tiene un periodo en el día específicado que cumpla con los requisitos solicitados, verifique los periodos de disponibilidad del garaje");
+                return;
+            }
+
+        }
+        if (isEnable) {
+            Alert.alert("Disponible", "El garaje puede recibirlo en la fecha y periodos seleccionados, ingrese el precio que ofrece por el total de horas");
+
+            setAvailable(true);
+        }
+        else {
+            Alert.alert("NO ES ENABLE");
+
+        }
+
+
+
+        console.log(sDate);
+
+
+
+
+
+
     }
-    else{
 
-        let dayIndex =  getIINDEX(sDate);
-        console.log("índice", dayIndex);
+
+    const sendOffer=async()=>{
+        let start = parseFloat(selectedStartTime.replace(":", ""));
+        let end = parseFloat(selectedENDTime.replace(":", ""));
+
+        let data ={
+            cost: parseFloat(priceo),
+            beginDate: sDate,
+            endDate: sDate,
+            startHour: start,
+            endHour: end,
+            gID: garage.id,
+            garage: garage.data(),
+            msg:msg,
+            user: myuser.data,
+            garageRef:"",
+            offeror:{},
+        registrationDate: new Date(),
+        updateDate : new Date(),
+        status:3,
+        vehicle: selectedCar.toJSON()
+        }
+
+        let res = await SendOffer( data)
+        if(res!=""){
+            Alert.alert("Éxito", "Se ha enviado su oferta, espere por una respuesta del ofertante");
+
+        }
+        else{
+            Alert.alert("Error", "Ha ocurrido un error inesperado, verifique su conexión");
+
+        }
     }
-
-
-
-
-    console.log(sDate);
-   
-
-
-
-
-
-}
-
     return (
 
         <View style={styles.container}>
@@ -401,14 +467,14 @@ const verifyAvailability = async()=>{
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                         style={{ backgroundColor: "#26798e", padding: 4, alignSelf: "center", borderRadius: 9 }}
-                                        onPress={()=>{setModal2Visible(true)}}
+                                        onPress={() => { setModal2Visible(true); setAvailable(false); }}
 
                                     >
                                         <Text style={{ color: "white" }} >Enviar Oferta</Text>
                                     </TouchableOpacity>
 
 
-                                    
+
                                 </View>
 
 
@@ -501,38 +567,85 @@ const verifyAvailability = async()=>{
                             Vehículo:
                         </Text>
 
-                        <Picker style={stylesNf.input} selectedValue={selectedCar} onValueChange={(itemValue) =>{  console.log(itemValue);setSelectedCar(itemValue)}}>
+                        <Picker style={stylesNf.input} selectedValue={selectedCar} onValueChange={(itemValue) => { console.log(itemValue); setSelectedCar(itemValue) }}>
 
-                                {cars.length>0?
-                                cars.map((item)=>(
-                                    <Picker.Item key={item.id} label={item.plate+" "+item.description} value={item} />
+                            {cars.length > 0 ?
+                                cars.map((item) => (
+                                    <Picker.Item key={item.id} label={item.plate + " " + item.description} value={item} />
 
                                 ))
-                                :""
+                                : ""
                             }
 
-                           
+
 
                         </Picker>
 
-                        <TouchableOpacity
-                            style={{ backgroundColor: "#26798e", padding: 4, alignSelf: "center", borderRadius: 9 }}
-                                onPress={()=>{
-                                    verifyAvailability();
+                        {
+                            isAvailable ?
+                                <>
+                                    <Text style={{ fontWeight: "bold" }}>Precio a ofrecer(por el total del periodo ingresado) Bs</Text>
 
-                                }}
-                        >
-                            <Text style={{ color: "white" }} >Verificar Disponibilidad</Text>
+                                    <TextInput style={stylesNf.input}
+                                        placeholder='Ingrese el precio a ofrecer (Bs)'
+                                value={priceo+""}
+                                onChangeText={(t)=>setPriceo(t)}
+                                keyboardType="numeric"
+
+                                    ></TextInput>
+                                    <Text>Precio estimado del garaje (por hora) {garage.data().cost} Bs</Text>
+                                    <TextInput  style={stylesNf.input}
+                                        value={msg}
+                                        onChangeText={(text)=>setMsg(text)}
+                                        placeholder='Ingrese un mensaje'>
+                                        
 
 
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                                        style={{ backgroundColor: "red", padding: 4, margin:1, alignSelf: "center", borderRadius: 9 }}
-                                        onPress={()=>{setModal2Visible(false)}}
+                                    </TextInput>
 
+                                    <TouchableOpacity
+                                        style={{ backgroundColor: "#23498e", padding: 4, alignSelf: "center", borderRadius: 9 }}
+                                        onPress={() => {
+                                            sendOffer();
+
+                                        }}
                                     >
-                                        <Text style={{ color: "white" }} >Volver</Text>
+
+
+                                        <Text style={{ color: "white" }} >ENVIAR OFERTA</Text>
+
+
                                     </TouchableOpacity>
+                                   
+
+                                </>
+
+
+                                :
+                                <TouchableOpacity
+                                    style={{ backgroundColor: "#26798e", padding: 4, alignSelf: "center", borderRadius: 9 }}
+                                    onPress={() => {
+                                        verifyAvailability();
+
+                                    }}
+                                >
+                                    <Text style={{ color: "white" }} >Verificar Disponibilidad</Text>
+
+
+                                </TouchableOpacity>
+
+                        }
+
+
+
+
+                        <TouchableOpacity
+                            style={{ backgroundColor: "red", padding: 4, margin: 1, alignSelf: "center", borderRadius: 9 }}
+                            onPress={() => { setModal2Visible(false) }}
+
+                        >
+                            <Text style={{ color: "white" }} >Volver</Text>
+                        </TouchableOpacity>
 
                     </View>
                 </View>
