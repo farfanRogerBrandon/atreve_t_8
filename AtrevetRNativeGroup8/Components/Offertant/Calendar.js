@@ -4,11 +4,11 @@ import { stylesNf } from '../../Styles/FormOffersStyles';
 import { GetTimeTable, SaveCalendar } from '../../Data/CalendarGarageData';
 import { RFValue } from 'react-native-responsive-fontsize';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import DateTimePicker from "@react-native-community/datetimepicker"
 
 import { FontAwesome, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons"
 import { GetDateTraducedWithOutH, convertToFirestoreTimestamp } from '../../Tools/TransformDate';
 //import DateTimePicker from 'react-native-modal-datetime-picker';
-import DateTimePicker from "@react-native-community/datetimepicker"
 const Calendar = () => {
     // Supongamos que estos son los datos para cada día
 

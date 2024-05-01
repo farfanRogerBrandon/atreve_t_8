@@ -8,14 +8,16 @@ import stylesMap from "../../Styles/GarageRequest"
 //import DateTimePicker from 'react-native-modal-datetime-picker';
 import DateTimePicker from "@react-native-community/datetimepicker"
 import MapView, { Marker } from 'react-native-maps';
-import { getAllGarages } from '../../Data/GetAllGarages';
-import { GetDateTraducedWithOutH } from '../../Tools/TransformDate';
+import { VerifyReservesByDate, getAllGarages, getCarsByUser } from '../../Data/GetAllGarages';
+import { GetDateTraducedWithOutH, compareDate, getDATEfromTime, getIINDEX } from '../../Tools/TransformDate';
 import { FontAwesome } from '@expo/vector-icons';
 
-
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import { Picker } from '@react-native-picker/picker';
 const RequestGarage = () => {
 
     const [garages, setGarages] = useState([]);
+    const [cars, setCars] = useState([]);
 
     const [heightMap, setHeight] = useState(550);
 
@@ -30,12 +32,80 @@ const RequestGarage = () => {
 
     const [modalVisible, setModalVisible] = useState(false);
 
+    const [myuser, setuser] = useState("");
+
+    const [sDate, setTitulationDate] = useState(new Date());
+    const [showDatePicker, setShowDatePicker] = useState(false);
+
+    const [isTimeStartPickerVisible, setTimeStartPickerVisibility] = useState(false);
+    const [selectedStartTime, setSelectedStartTime] = useState(null);
+
+
+
+    const [isTimeENDPickerVisible, setTimeENDPickerVisibility] = useState(false);
+    const [selectedENDTime, setSelectedENDTime] = useState(null);
+
+
+
+    const [selectedCar, setSelectedCar] = useState({});
+
+    const [modal2Visible, setModal2Visible] = useState(false);
+
+
+
+
+
+
+    const handleDateChange = (event, date) => {
+
+        setShowDatePicker(false);
+        if (date !== undefined) {
+            setTitulationDate(date);
+        }
+    };
+
+
+    const handleTimeStartConfirm = (time) => {
+        setSelectedStartTime(time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }));
+        console.log(selectedStartTime);
+        setTimeStartPickerVisibility(false);
+    };
+
+
+    const handleTimeENDConfirm = (time) => {
+        setSelectedENDTime(time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }));
+        setTimeENDPickerVisibility(false);
+
+    };
+
+
+
+    var muser = "";
+    const getLocalUser = async () => {
+        try {
+            muser = await AsyncStorage.getItem("user");
+            let muserJson = muser ? JSON.parse(muser) : null;
+            setuser(muserJson);
+            await getCars(muserJson.id);
+        }
+        catch (e) {
+            console.error(e);
+        }
+    }
+
+
 
     useEffect(() => {
+        getLocalUser();
         getGarages();
+
     }, [])
 
-
+    const getCars = async (id) => {
+        let c = await getCarsByUser(id);
+        console.log(c);
+        setCars(c);
+    }
     const getGarages = async () => {
         let res = await getAllGarages();
 
@@ -45,10 +115,12 @@ const RequestGarage = () => {
 
 
 
+
+
     const selectGarage = async (garage) => {
         console.log("Hola");
 
-        setHeight(430);
+        setHeight(400);
         console.log("Hola");
         setGarage(garage);
     }
@@ -71,7 +143,7 @@ const RequestGarage = () => {
                         <View style={stylesNf.horizontal} >
                             <FontAwesome name="clock-o" size={RFValue(25)} color="black" style={{ margin: 5 }} />
                             <Text style={{ margin: 8, fontSize: RFValue(16), color: "#00c0a9", fontWeight: "bold" }} >{ite.startHour != 0 ? ite.startHour.toString().slice(0, -2) + ":" + ite.startHour.toString().slice(-2) : "00:00"} a {ite.endHour.toString().slice(0, -2) + ":" + ite.endHour.toString().slice(-2)}</Text>
-                           
+
                         </View>
 
                     </>
@@ -103,7 +175,7 @@ const RequestGarage = () => {
                         <View style={stylesNf.horizontal} >
                             <FontAwesome name="clock-o" size={RFValue(25)} color="black" style={{ margin: 5 }} />
                             <Text style={{ margin: 8, fontSize: RFValue(16), color: "#00c0a9", fontWeight: "bold" }} >{ite.startHour != 0 ? ite.startHour.toString().slice(0, -2) + ":" + ite.startHour.toString().slice(-2) : "00:00"} a {ite.endHour.toString().slice(0, -2) + ":" + ite.endHour.toString().slice(-2)}</Text>
-                       
+
                         </View>
 
                     </>
@@ -120,7 +192,54 @@ const RequestGarage = () => {
 
 
 
+const verifyAvailability = async()=>{
+    
+    if(garage.data().height < selectedCar.height ||garage.data().width < selectedCar.width || garage.data().length < selectedCar.length ){
+        Alert.alert("No disponible", "Las dimensiones del vehículo son mayores a las del espacio del garaje");
 
+        return;
+
+    }
+    let start = parseFloat(selectedStartTime.replace(":", ""));
+    let end = parseFloat(selectedENDTime.replace(":", ""));
+    //garage.data().
+    let isSpecialDay= false;
+
+    /*for (const item of specialDays) {
+        let dateC = getDATEfromTime(item.day);
+        let res = compareDate(dateC, sDate);
+        if (res) {
+            isSpecialDay = true;
+            break;
+        }
+    */
+       
+    await VerifyReservesByDate(sDate, start , end, garage.id);
+    return;
+    
+    let indexSpecialDay = specialDays.findIndex (x=> compareDate( getDATEfromTime(x.day),sDate)==true )
+    
+    
+    if(indexSpecialDay!=-1){
+        console.log("ES DÏA ESPECIAL: ", indexSpecialDay);
+    }
+    else{
+
+        let dayIndex =  getIINDEX(sDate);
+        console.log("índice", dayIndex);
+    }
+
+
+
+
+    console.log(sDate);
+   
+
+
+
+
+
+}
 
     return (
 
@@ -142,45 +261,45 @@ const RequestGarage = () => {
 
                     setModalVisible(!modalVisible);
                 }}>
-                <View style={{ alignSelf: "center", justifyContent: "center", height: "77%", marginTop:10 }}>
+                <View style={{ alignSelf: "center", justifyContent: "center", height: "77%", marginTop: 10 }}>
 
                     <View style={{ backgroundColor: "#ffe3b3", borderRadius: 25, padding: RFValue(15), elevation: 5 }}>
-            <Text style={{ alignSelf: "center", color: "#63caa7", fontWeight: "bold", fontSize: RFValue(20) }}>Disponibilidad Semanal del Garaje</Text>
-                        
-                    {
-                daysData != [] ?
-                    <FlatList
-                        data={daysData}
-                        renderItem={renderItem}
-                        keyExtractor={(item, index) => index.toString()}
-                        style={{ height: RFValue(260) }}
-                    />
-                    : ""
+                        <Text style={{ alignSelf: "center", color: "#63caa7", fontWeight: "bold", fontSize: RFValue(20) }}>Disponibilidad Semanal del Garaje</Text>
 
-            }
-            <Text style={{ alignSelf: "center", color: "#63caa7", fontWeight: "bold", fontSize: RFValue(20) }}>Días Especiales</Text>
+                        {
+                            daysData != [] ?
+                                <FlatList
+                                    data={daysData}
+                                    renderItem={renderItem}
+                                    keyExtractor={(item, index) => index.toString()}
+                                    style={{ height: RFValue(260) }}
+                                />
+                                : ""
 
-                        
-            {
-                specialDays != [] ?
-                    <FlatList
-                        style={{ elevation: 5 }}
-                        data={specialDays}
-                        renderItem={renderSpecialItem}
-                        keyExtractor={(item, index) => index.toString()}
-                    />
-                    : ""
+                        }
+                        <Text style={{ alignSelf: "center", color: "#63caa7", fontWeight: "bold", fontSize: RFValue(20) }}>Días Especiales</Text>
 
-            }
-                        
-                        
-                    <TouchableOpacity onPress={()=>{setModalVisible(false)}}><Text>Volver</Text></TouchableOpacity>
-                        </View></View>
-                    
-                    
-                    
-                    
-                    </Modal>
+
+                        {
+                            specialDays != [] ?
+                                <FlatList
+                                    style={{ elevation: 5 }}
+                                    data={specialDays}
+                                    renderItem={renderSpecialItem}
+                                    keyExtractor={(item, index) => index.toString()}
+                                />
+                                : ""
+
+                        }
+
+
+                        <TouchableOpacity onPress={() => { setModalVisible(false) }}><Text>Volver</Text></TouchableOpacity>
+                    </View></View>
+
+
+
+
+            </Modal>
             <Text style={{ color: "white", fontWeight: "bold", fontSize: RFValue(20), alignSelf: "center" }}>Escoja un Garaje</Text>
             <View style={[stylesMap.myMapContainer3, { height: RFValue(heightMap) }]}>
                 <MapView
@@ -250,8 +369,8 @@ const RequestGarage = () => {
                 {
                     garage != null ?
 
-                        <View style={{ width: "100%", height: 200, borderTopLeftRadius: 20, borderTopRightRadius: 20, marginBottom: "auto", marginTop: -20, backgroundColor: "beige" }}>
-                            <ScrollView style={{ width: "100%", height: 200 }}>
+                        <View style={{ width: "100%", height: 280, borderTopLeftRadius: 20, borderTopRightRadius: 20, marginBottom: "auto", marginTop: -20, backgroundColor: "beige" }}>
+                            <ScrollView style={{ width: "100%", height: 100 }}>
 
                                 <Text style={{ margin: 8, fontSize: RFValue(16), color: "#00c0a9", fontWeight: "bold" }} >
                                     Descripción: {garage.data().description}
@@ -272,15 +391,24 @@ const RequestGarage = () => {
                                 </Text>
                                 <View style={stylesNf.horizontal}>
 
-                                    <TouchableOpacity onPress={() => { setHeight(550), setGarage(null) }} >
+                                    <TouchableOpacity onPress={() => { setHeight(550), setGarage(null) }} style={{ backgroundColor: "#ffc172", padding: 4, alignSelf: "center", borderRadius: 9 }} >
                                         <Text>Cerrar</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity onPress={()=>{ setDaysData(garage.data().timeTable); setSpecialDays(garage.data().specialDates);setModalVisible(true);}}>
+                                    <TouchableOpacity onPress={() => { setDaysData(garage.data().timeTable); setSpecialDays(garage.data().specialDates); setModalVisible(true); }}
+                                        style={{ backgroundColor: "#63caa7", padding: 4, alignSelf: "center", borderRadius: 9 }}
+                                    >
                                         <Text>Ver periodos disponibles</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity>
-                                        <Text>Enviar Oferta</Text>
+                                    <TouchableOpacity
+                                        style={{ backgroundColor: "#26798e", padding: 4, alignSelf: "center", borderRadius: 9 }}
+                                        onPress={()=>{setModal2Visible(true)}}
+
+                                    >
+                                        <Text style={{ color: "white" }} >Enviar Oferta</Text>
                                     </TouchableOpacity>
+
+
+                                    
                                 </View>
 
 
@@ -301,7 +429,114 @@ const RequestGarage = () => {
             </View>
 
 
+            <Modal
+                style={
 
+                    {
+                        justifyContent: "center", alignItems: "center", alignSelf: "center",
+
+
+
+                    }}
+                transparent={true}
+                animationType="slide"
+
+                visible={modal2Visible}
+                onRequestClose={() => {
+
+                    setModalVisible(!modal2Visible);
+                }}>
+                <View style={{ alignSelf: "center", justifyContent: "center", height: "77%", marginTop: 10 }}>
+
+                    <View style={{ backgroundColor: "#ffe3b3", borderRadius: 25, padding: RFValue(15), elevation: 5 }}>
+                        <Text style={{ alignSelf: "center", color: "#63caa7", fontWeight: "bold", fontSize: RFValue(20) }}>Seleccione la fecha y los horarios que requeríra el garaje y verifique la disponibilidad</Text>
+                        <Text style={{ alignSelf: "flex-start", color: "black", fontWeight: "bold", fontSize: RFValue(15) }}>
+                            Fecha:
+                        </Text>
+
+                        <Text onPress={() => setShowDatePicker(true)}>{sDate != null ? sDate.toLocaleDateString() : "Ingrese la fecha"}</Text>
+                        {showDatePicker && (
+                            <DateTimePicker
+                                value={sDate}
+                                mode="date"
+                                display="default"
+                                onChange={handleDateChange}
+                                style={stylesNf.dateTimePicker}
+                            />
+
+                        )}
+
+
+                        <Text style={{ alignSelf: "flex-start", color: "black", fontWeight: "bold", fontSize: RFValue(15) }}>
+                            Hora Inicio:
+                        </Text>
+                        <View >
+                            <TouchableOpacity onPress={() => setTimeStartPickerVisibility(true)} style={{ backgroundColor: "#63caa7", padding: 5, borderRadius: 8 }} ><Text>Seleccionar Hora fin</Text></TouchableOpacity>
+                            {selectedStartTime && <Text>Hora seleccionada: {selectedStartTime}</Text>}
+                            <DateTimePickerModal
+                                isVisible={isTimeStartPickerVisible}
+                                mode="time"
+                                is24Hour={true}
+                                onConfirm={handleTimeStartConfirm}
+                                onCancel={() => setTimeStartPickerVisibility(false)}
+                            />
+                        </View>
+
+                        <Text style={{ alignSelf: "flex-start", color: "black", fontWeight: "bold", fontSize: RFValue(15) }}>
+                            Hora Fin:
+                        </Text>
+
+                        <View >
+                            <TouchableOpacity onPress={() => setTimeENDPickerVisibility(true)} style={{ backgroundColor: "#63caa7", padding: 5, borderRadius: 8 }}  ><Text>Seleccionar Hora Fin</Text></TouchableOpacity>
+                            {selectedStartTime && <Text>Hora seleccionada: {selectedENDTime}</Text>}
+                            <DateTimePickerModal
+                                isVisible={isTimeENDPickerVisible}
+                                mode="time"
+                                is24Hour={true}
+                                onConfirm={handleTimeENDConfirm}
+                                onCancel={() => setTimeENDPickerVisibility(false)}
+                            />
+                        </View>
+                        <Text style={{ alignSelf: "flex-start", color: "black", fontWeight: "bold", fontSize: RFValue(15) }}>
+                            Vehículo:
+                        </Text>
+
+                        <Picker style={stylesNf.input} selectedValue={selectedCar} onValueChange={(itemValue) =>{  console.log(itemValue);setSelectedCar(itemValue)}}>
+
+                                {cars.length>0?
+                                cars.map((item)=>(
+                                    <Picker.Item key={item.id} label={item.plate+" "+item.description} value={item} />
+
+                                ))
+                                :""
+                            }
+
+                           
+
+                        </Picker>
+
+                        <TouchableOpacity
+                            style={{ backgroundColor: "#26798e", padding: 4, alignSelf: "center", borderRadius: 9 }}
+                                onPress={()=>{
+                                    verifyAvailability();
+
+                                }}
+                        >
+                            <Text style={{ color: "white" }} >Verificar Disponibilidad</Text>
+
+
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                                        style={{ backgroundColor: "red", padding: 4, margin:1, alignSelf: "center", borderRadius: 9 }}
+                                        onPress={()=>{setModal2Visible(false)}}
+
+                                    >
+                                        <Text style={{ color: "white" }} >Volver</Text>
+                                    </TouchableOpacity>
+
+                    </View>
+                </View>
+            </Modal>
         </View>
     );
 };

@@ -36,14 +36,15 @@ const stylesNf = StyleSheet.create({
   },
   input: {
     borderBottomWidth: 2, // Solo el borde inferior
-    marginBottom: 10,
     paddingHorizontal: 10,
     borderRadius: 8,
-    flex: 1,
     fontSize: RFValue(16), // Tamaño del texto
     borderColor: 'green',
-    borderRadius: 5,
+    borderRadius: 10,
     padding: 10,
+    backgroundColor:"#ffc172",
+    elevation:3,
+    margin:8
   },
   textarea: {
     height: 100,
