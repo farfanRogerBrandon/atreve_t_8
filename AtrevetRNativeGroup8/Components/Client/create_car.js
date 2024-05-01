@@ -5,9 +5,9 @@ import { insertCars } from '../../Data/CarsInsert';
 
 const Create_Car = (props) => {
     const [plate, setLicensePlate] = useState('');
-    const [high, setHeight] = useState('');
+    const [height, setHeight] = useState('');
     const [width, setWidth] = useState('');
-    const [lenght, setLength] = useState('');
+    const [length, setLength] = useState('');
     const [description, setDescription] = useState('');
     const [state, setState] = useState(1);
 
@@ -16,9 +16,9 @@ const Create_Car = (props) => {
         // For example, you can send the car data to a server
         const car = {
             plate,
-            high,
-            width,
-            lenght,
+            height:parseFloat(height),
+            width:parseFloat(width),
+            length:parseFloat(length),
             description,
             state
         };
@@ -33,7 +33,7 @@ const Create_Car = (props) => {
             console.error('Error inserting car:', error);
         }
 
-        console.log('Submitted:', { plate, high, width, lenght, description });
+        console.log('Submitted:', { plate, height, width, length, description });
     };
 
   return (
@@ -55,7 +55,7 @@ const Create_Car = (props) => {
             <TextInput
                 style={Create_CarStyles.input}
                 placeholder="Altura del auto"
-                value={high}
+                value={height}
                 onChangeText={text => setHeight(text)}
                 keyboardType="numeric"
             />
@@ -73,7 +73,7 @@ const Create_Car = (props) => {
             <TextInput
                 style={Create_CarStyles.input}
                 placeholder="Largo del Auto"
-                value={lenght}
+                value={length}
                 onChangeText={text => setLength(text)}
                 keyboardType="numeric"
             />

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { StatusBar } from "expo-status-bar";
-import { View, Text, TextInput, TouchableOpacity, ScrollView, FlatList } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, FlatList, Alert } from 'react-native';
 import ListGaragesStyles from '../../Styles/ListGaragesStyles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { getGarages } from '../../Data/GaragesGet';
+import { logicalDeleteGarageById } from '../../Data/GarageEdit';
 
 const ListGarages = (props) => {
     const [data, setData] = useState([]);
@@ -21,6 +22,17 @@ const ListGarages = (props) => {
         getGaragesList()
     },[])
 
+    const handleDelete = async (garageId) => {
+        try {
+            await logicalDeleteGarageById(garageId);
+            Alert.alert('Eliminado', 'El garaje se elimino con exito');
+            // Perform any additional actions after successful deletion
+        } catch (error) {
+            console.error('Error deleting garage:', error);
+            // Handle error (e.g., display error message)
+        }
+    };
+
     const renderItem = ({item, index}) => {
         return(
             <View style={ListGaragesStyles.row}>
@@ -31,14 +43,17 @@ const ListGarages = (props) => {
                 <Text style={[ListGaragesStyles.cell, {width: 90}]}>{item.cost}</Text>
                 <Text style={[ListGaragesStyles.cell, {width: 100}]}>{item.spaces}</Text>
                 <Text style={[ListGaragesStyles.cell, {width: 150}]}>{item.description}</Text>
-                <Text style={[ListGaragesStyles.cell, {width: 150}]}>
+                <Text style={[ListGaragesStyles.cell, {width: 80}]}>
                     <TouchableOpacity style={ListGaragesStyles.editButton} key={item.id}
                     onPress={()=>props.navigation.navigate('EditGarage',{garageId:item.id})} >
-                    <   Icon style={ListGaragesStyles.edit} name="edit" size={30} />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={ListGaragesStyles.editDelete} key={item.id}>
+                        <Icon style={ListGaragesStyles.edit} name="edit" size={30} />
+                    </TouchableOpacity>                  
+                </Text>
+                <Text style={[ListGaragesStyles.cell, {width: 80}]}>
+                    <TouchableOpacity style={ListGaragesStyles.editDelete} 
+                    onPress={() => handleDelete(item.id)}>
                         <Icon style={ListGaragesStyles.delete} name="trash" size={30} />
-                    </TouchableOpacity>                   
+                    </TouchableOpacity> 
                 </Text>
             </View>
         )
@@ -64,7 +79,8 @@ const ListGarages = (props) => {
                     <Text style={[ListGaragesStyles.headerText, {width: 90}]}>Costo</Text>
                     <Text style={[ListGaragesStyles.headerText, {width: 100}]}>Espacios</Text>
                     <Text style={[ListGaragesStyles.headerText, {width: 150}]}>Descripcion</Text>
-                    <Text style={[ListGaragesStyles.headerText, {width: 150}]}>Editar/Eliminar</Text>
+                    <Text style={[ListGaragesStyles.headerText, {width: 80}]}>Editar</Text>
+                    <Text style={[ListGaragesStyles.headerText, {width: 80}]}>Eliminar</Text>
                 </View>
                 <FlatList
                     data={data}

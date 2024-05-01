@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { StatusBar } from "expo-status-bar";
-import { View, Text, TextInput, TouchableOpacity, ScrollView, FlatList } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, FlatList, Alert } from 'react-native';
 import ListCarStyles from '../../Styles/ListCarsStyles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { getCars } from '../../Data/CarsGet';
+import { logicalDeleteCarById } from '../../Data/CarsEdit';
 
 const ListCars = (props) => {
     const [data, setData] = useState([]);
@@ -21,20 +22,34 @@ const ListCars = (props) => {
         getCarsList()
     },[])
 
+    const handleDelete = async (carId) => {
+        try {
+            await logicalDeleteCarById(carId);
+            Alert.alert('Eliminado', 'El auto se elimino con exito');
+            // Perform any additional actions after successful deletion
+        } catch (error) {
+            console.error('Error deleting car:', error);
+            // Handle error (e.g., display error message)
+        }
+    };
+
     const renderItem = ({item, index}) => {
         return(
             <View style={ListCarStyles.row}>
                 <Text style={[ListCarStyles.cell, {width: 100}]}>{item.plate}</Text>
-                <Text style={[ListCarStyles.cell, {width: 90}]}>{item.high}</Text>
+                <Text style={[ListCarStyles.cell, {width: 90}]}>{item.height}</Text>
                 <Text style={[ListCarStyles.cell, {width: 90}]}>{item.width}</Text>
-                <Text style={[ListCarStyles.cell, {width: 90}]}>{item.lenght}</Text>
+                <Text style={[ListCarStyles.cell, {width: 90}]}>{item.length}</Text>
                 <Text style={[ListCarStyles.cell, {width: 150}]}>{item.description}</Text>
                 <Text style={[ListCarStyles.cell, {width: 90}]}>
                     <TouchableOpacity style={ListCarStyles.editButton} key={item.id}
                     onPress={()=>props.navigation.navigate('EditCar',{carId:item.id})} >
                         <Icon style={ListCarStyles.edit} name="edit" size={30} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={ListCarStyles.deleteButton} key={item.id}>
+                </Text>
+                <Text style={[ListCarStyles.cell, {width: 90}]}>
+                    <TouchableOpacity style={ListCarStyles.deleteButton}
+                    onPress={() => handleDelete(item.id)}>
                         <Icon style={ListCarStyles.delete} name="trash" size={30} />
                     </TouchableOpacity>
                 </Text>
@@ -60,7 +75,8 @@ const ListCars = (props) => {
                     <Text style={[ListCarStyles.headerText, {width: 90}]}>Ancho</Text>
                     <Text style={[ListCarStyles.headerText, {width: 90}]}>Largo</Text>
                     <Text style={[ListCarStyles.headerText, {width: 150}]}>Descripcion</Text>
-                    <Text style={[ListCarStyles.headerText, {width: 90}]}>Editar/Eliminar</Text>
+                    <Text style={[ListCarStyles.headerText, {width: 90}]}>Editar</Text>
+                    <Text style={[ListCarStyles.headerText, {width: 90}]}>Eliminar</Text>
                 </View>
                 <FlatList
                     data={data}

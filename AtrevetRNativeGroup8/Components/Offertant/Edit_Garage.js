@@ -5,6 +5,7 @@ import MapView, { MapMarker, Marker } from 'react-native-maps';
 import MapMaker from '../../Tools/Maper';
 import { insertGarage } from '../../Data/GarageInsert';
 import { getGarageById } from '../../Data/GaragesGet';
+import { updateGarageById } from '../../Data/GarageEdit';
 
 const Edit_Garage = (props) => {
     
@@ -41,16 +42,16 @@ const Edit_Garage = (props) => {
     useEffect(() => {
         // Update state values with garage data when garage object changes
         setAddress(garage.address || '');
-        setHeight(garage.height || '');
-        setWidth(garage.width || '');
-        setLength(garage.length || '');
+        setHeight(garage.height ? String(garage.height) : ''); // Parse numeric value to string
+        setWidth(garage.width ? String(garage.width) : ''); // Parse numeric value to string
+        setLength(garage.length ? String(garage.length) : ''); // Parse numeric value to string
         setDescription(garage.description || '');
         setState(garage.state || 1);
         setLocation(garage.location || '');
         setavialability(garage.avialability || 'Libre');
-        setRating(garage.rating || 0);
-        setCost(garage.cost || '');
-        setSpaces(garage.spaces || '');
+        setRating(garage.rating ? String(garage.rating) : '');
+        setCost(garage.cost ? String(garage.cost) : '');
+        setSpaces(garage.spaces ? String(garage.spaces) : '');
     }, [garage]);
 
     const handleMapPress = async(event) => {
@@ -67,6 +68,30 @@ const Edit_Garage = (props) => {
     const handleSubmit = async() => {
         // Handle submission logic here
         // For example, you can send the garage data to a server
+        const timeTable = [
+            {
+                day: "Lunes", periods: []
+            },
+            {
+                day: "Martes", periods: []
+            },
+            {
+                day: "Miercoles", periods: []
+            },
+            {
+                day: "Jueves", periods: []
+            },
+            {
+                day: "Viernes", periods: []
+            },
+            {
+                day: "Sabado", periods: []
+            },
+            {
+                day: "Domingo", periods: []
+            },
+        ]
+
         const displayName = await mapMaker.getAddressFromCoordinates(location.latitude, location.longitude)
         const garageUpdated = {
             address:displayName,
@@ -85,13 +110,14 @@ const Edit_Garage = (props) => {
         };
 
         try {
-            await insertGarage(garageUpdated);
-            Alert.alert('Registrado', 'El garaje se registro con exito');
-            console.log('Garage inserted successfully:', garageUpdated);
+            // Update the car data in Firebase
+            await updateGarageById(props.route.params.garageId, garageUpdated);
+            Alert.alert('Actualizado', 'Los datos del garaje se actualizaron con éxito');
+            console.log('Garage updated successfully:', garageUpdated);
             props.navigation.navigate('ListGarages');
-        } catch {
-            Alert.alert('Error', 'El garaje no se registro');
-            console.error('Error inserting garage:', error);
+        } catch (error) {
+            Alert.alert('Error', 'Los datos del garaje no se pudieron actualizar');
+            console.error('Error updating garage:', error);
         }
 
         console.log('Submitted:', { address, cost, height, width, length, description, location });

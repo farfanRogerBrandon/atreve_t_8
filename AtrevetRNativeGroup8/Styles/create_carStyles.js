@@ -28,7 +28,8 @@ const Create_CarStyles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 15,
-        marginTop: 10,
+        marginTop: 20,
+        marginBottom: 20,
     },
     buttonText: {
         color: '#000',

@@ -3,12 +3,13 @@ import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert } from 'reac
 import Create_CarStyles from '../../Styles/create_carStyles';
 import { insertCars } from '../../Data/CarsInsert';
 import { getCarById } from '../../Data/CarsGet';
+import { updateCarById } from '../../Data/CarsEdit';
 
 const Edit_Car = (props) => {
     const [plate, setLicensePlate] = useState('');
-    const [high, setHeight] = useState('');
+    const [height, setHeight] = useState('');
     const [width, setWidth] = useState('');
-    const [lenght, setLength] = useState('');
+    const [length, setLength] = useState('');
     const [description, setDescription] = useState('');
     const [state, setState] = useState(1);
 
@@ -31,9 +32,9 @@ const Edit_Car = (props) => {
     useEffect(() => {
         // Update state values with car data when car object changes
         setLicensePlate(car.plate || '');
-        setHeight(car.high || '');
-        setWidth(car.width || '');
-        setLength(car.length || '');
+        setHeight(car.height ? String(car.height) : ''); // Parse numeric value to string
+        setWidth(car.width ? String(car.width) : ''); // Parse numeric value to string
+        setLength(car.length ? String(car.length) : ''); // Parse numeric value to string
         setDescription(car.description || '');
         setState(car.state || 1);
     }, [car]);
@@ -43,24 +44,25 @@ const Edit_Car = (props) => {
         // For example, you can send the car data to a server
         const carUpdated = {
             plate,
-            high,
-            width,
-            lenght,
+            height:parseFloat(height),
+            width:parseFloat(width),
+            length:parseFloat(length),
             description,
             state
         };
 
         try {
-            await insertCars(carUpdated);
-            Alert.alert('Registrado', 'El auto se registro con exito');
-            console.log('Car inserted successfully:', carUpdated);
+            // Update the car data in Firebase
+            await updateCarById(props.route.params.carId, carUpdated);
+            Alert.alert('Actualizado', 'Los datos del auto se actualizaron con éxito');
+            console.log('Car updated successfully:', carUpdated);
             props.navigation.navigate('ListCars');
-        } catch {
-            Alert.alert('Error', 'El auto no se registro');
-            console.error('Error inserting car:', error);
+        } catch (error) {
+            Alert.alert('Error', 'Los datos del auto no se pudieron actualizar');
+            console.error('Error updating car:', error);
         }
 
-        console.log('Submitted:', { plate, high, width, lenght, description });
+        console.log('Submitted:', { plate, height, width, length, description });
     };
 
   return (
@@ -82,7 +84,7 @@ const Edit_Car = (props) => {
             <TextInput
                 style={Create_CarStyles.input}
                 placeholder="Altura del auto"
-                value={high}
+                value={height}
                 onChangeText={text => setHeight(text)}
                 keyboardType="numeric"
             />
@@ -100,7 +102,7 @@ const Edit_Car = (props) => {
             <TextInput
                 style={Create_CarStyles.input}
                 placeholder="Largo del Auto"
-                value={lenght}
+                value={length}
                 onChangeText={text => setLength(text)}
                 keyboardType="numeric"
             />
