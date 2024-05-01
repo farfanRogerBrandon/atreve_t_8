@@ -1,9 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import {  StyleSheet, Text, View } from 'react-native';
 import MyStatusBar from './Components/myStatus';
-import Calendar from './Components/Client/Calendar';
 import TimePickerExample from './Components/Client/TimePickerExample';
-
+import RequestGarage from './Components/Client/RequestGarage';
 export default function App() {
   return (
     
@@ -11,7 +10,7 @@ export default function App() {
     <MyStatusBar>
 
     </MyStatusBar>
-    <Calendar></Calendar>
+    <RequestGarage></RequestGarage>
     </>
   );
 }
