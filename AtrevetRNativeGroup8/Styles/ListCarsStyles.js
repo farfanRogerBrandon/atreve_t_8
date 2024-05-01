@@ -61,8 +61,14 @@ const ListCarStyles = StyleSheet.create({
         fontSize: 14,
         flex: 1,
     },
+    editButton: {
+        marginLeft: 5,
+    },
     edit: {
         color: "#0EABFE"
+    },
+    deleteButton: {
+        marginLeft: 5,
     },
     delete: {
         color: "#FF0000"

@@ -17,4 +17,11 @@ const getCars = async (id) => {
     return data;
 }
 
+const getCarById = async (carId) => {
+    const carRef = doc(db, "car", carId); // Reference to the specific car document
+    const carSnapshot = await getDoc(carRef);
+    return carSnapshot.data();
+};
+
 export {getCars};
+export {getCarById};

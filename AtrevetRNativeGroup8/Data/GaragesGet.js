@@ -17,4 +17,12 @@ const getGarages = async (id) => {
     return data;
 }
 
+const getGarageById = async (garageId) => {
+    const garRef = doc(db, "grage", garageId); // Reference to the specific car document
+    const garSnapshot = await getDoc(garRef);
+    return garSnapshot.data();
+};
+
+
 export {getGarages};
+export {getGarageById};

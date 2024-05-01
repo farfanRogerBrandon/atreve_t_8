@@ -15,7 +15,7 @@ const Create_Garage = (props) => {
     const [location, setLocation] = useState(null);
     const [description, setDescription] = useState('');
     const [spaces, setSpaces] = useState('');
-    const [avialability, setavialability] = useState('libre');
+    const [avialability, setavialability] = useState('Libre');
     const [rating, setRating] = useState(0);
     const [state, setState] = useState(1);
 

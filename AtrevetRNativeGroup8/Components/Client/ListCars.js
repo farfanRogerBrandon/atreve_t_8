@@ -30,8 +30,13 @@ const ListCars = (props) => {
                 <Text style={[ListCarStyles.cell, {width: 90}]}>{item.lenght}</Text>
                 <Text style={[ListCarStyles.cell, {width: 150}]}>{item.description}</Text>
                 <Text style={[ListCarStyles.cell, {width: 90}]}>
-                    <Icon style={ListCarStyles.edit} name="edit" size={30} />
-                    <Icon style={ListCarStyles.delete} name="trash" size={30} />
+                    <TouchableOpacity style={ListCarStyles.editButton} key={item.id}
+                    onPress={()=>props.navigation.navigate('EditCar',{carId:item.id})} >
+                        <Icon style={ListCarStyles.edit} name="edit" size={30} />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={ListCarStyles.deleteButton} key={item.id}>
+                        <Icon style={ListCarStyles.delete} name="trash" size={30} />
+                    </TouchableOpacity>
                 </Text>
             </View>
         )

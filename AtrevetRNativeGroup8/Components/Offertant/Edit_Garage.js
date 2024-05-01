@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView  } from 'react-native';
 import Create_GarageStyles from '../../Styles/create_garageStyles';
 import MapView, { MapMarker, Marker } from 'react-native-maps';
 import MapMaker from '../../Tools/Maper';
+import { insertGarage } from '../../Data/GarageInsert';
+import { getGarageById } from '../../Data/GaragesGet';
 
-const Edit_Garage = () => {
+const Edit_Garage = (props) => {
     
     const [address, setAddress] = useState('');
     const [cost, setCost] = useState('');
@@ -14,22 +16,81 @@ const Edit_Garage = () => {
     const [location, setLocation] = useState(null);
     const [description, setDescription] = useState('');
     const [spaces, setSpaces] = useState('');
+    const [avialability, setavialability] = useState('libre');
+    const [rating, setRating] = useState(0);
+    const [state, setState] = useState(1);
 
     const mapMaker = new MapMaker();
 
-    const handleMapPress = (event) => {
+    const [garage, setGarage] = useState({})
+
+    const getOneGarage = async(id)=>{
+        try{
+            let newData = await getGarageById(id)
+            setGarage(newData);
+            console.log(newData);
+        }catch{
+            console.error(error)
+        }
+    }
+
+    useEffect(()=>{
+        getOneGarage(props.route.params.garageId)
+    },[]);
+
+    useEffect(() => {
+        // Update state values with garage data when garage object changes
+        setAddress(garage.address || '');
+        setHeight(garage.height || '');
+        setWidth(garage.width || '');
+        setLength(garage.length || '');
+        setDescription(garage.description || '');
+        setState(garage.state || 1);
+        setLocation(garage.location || '');
+        setavialability(garage.avialability || 'Libre');
+        setRating(garage.rating || 0);
+        setCost(garage.cost || '');
+        setSpaces(garage.spaces || '');
+    }, [garage]);
+
+    const handleMapPress = async(event) => {
         const { latitude, longitude } = event.nativeEvent.coordinate;
         setLocation(event.nativeEvent.coordinate);
-        setAddress(mapMaker.getAddressFromCoordinates(latitude, longitude));
+        const displayName = await mapMaker.getAddressFromCoordinates(latitude, longitude)
+        setAddress(displayName);
 
         console.log('Latitude:', latitude);
         console.log('Longitude:', longitude);
         console.log('Address:', address);
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async() => {
         // Handle submission logic here
         // For example, you can send the garage data to a server
+        const garageUpdated = {
+            address,
+            avialability,
+            cost,
+            description,
+            height,
+            width,
+            length,
+            location,
+            rating,
+            spaces,
+            state
+        };
+
+        try {
+            await insertGarage(garageUpdated);
+            Alert.alert('Registrado', 'El garaje se registro con exito');
+            console.log('Garage inserted successfully:', garageUpdated);
+            props.navigation.navigate('ListGarages');
+        } catch {
+            Alert.alert('Error', 'El garaje no se registro');
+            console.error('Error inserting garage:', error);
+        }
+
         console.log('Submitted:', { address, cost, height, width, length, description, location });
     };
 
@@ -102,8 +163,8 @@ const Edit_Garage = () => {
                 initialRegion={{
                 latitude: -17.388,
                 longitude: -66.155,
-                latitudeDelta: 0.03,
-                longitudeDelta: 0.03,
+                latitudeDelta: 0.1,
+                longitudeDelta: 0.1,
                 }}
             >
                 {location && (
@@ -116,7 +177,6 @@ const Edit_Garage = () => {
                     <Text style={Create_GarageStyles.buttonText}>Guardar Garaje</Text>
                 </TouchableOpacity>
             </View>
-        
         </View>
     </ScrollView>
   );

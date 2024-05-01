@@ -32,8 +32,13 @@ const ListGarages = (props) => {
                 <Text style={[ListGaragesStyles.cell, {width: 100}]}>{item.spaces}</Text>
                 <Text style={[ListGaragesStyles.cell, {width: 150}]}>{item.description}</Text>
                 <Text style={[ListGaragesStyles.cell, {width: 150}]}>
-                    <Icon style={ListGaragesStyles.edit} name="edit" size={30} />
-                    <Icon style={ListGaragesStyles.delete} name="trash" size={30} />
+                    <TouchableOpacity style={ListCarStyles.editButton} key={item.id}
+                    onPress={()=>props.navigation.navigate('EditGarage',{garageId:item.id})} >
+                    <   Icon style={ListGaragesStyles.edit} name="edit" size={30} />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={ListCarStyles.editDelete} key={item.id}>
+                        <Icon style={ListGaragesStyles.delete} name="trash" size={30} />
+                    </TouchableOpacity>                   
                 </Text>
             </View>
         )
