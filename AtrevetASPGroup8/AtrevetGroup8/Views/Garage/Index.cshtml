@@ -5,60 +5,43 @@
 }
 @model List<AtrevetGroup8.Models.Grage>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Lista de Ofertantes</title>
-</head>
-<body>
-    <h1>Lista de Usuarios</h1>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin-bottom: 20px;
-        }
+<h1>Lista de Usuarios</h1>
 
-        th, td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
 
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
-    <table border="1">
-        <tr>
-            <th>Dirección</th>
-            <th>Disponibilidad</th>
-            <th>Costo</th>
-            <th>Descripción</th>
-            <th>Altura</th>
-            <th>Longitud</th>
-            <th>Rating</th>
-            <th>Espacios</th>
-            <th>Horario</th>
-        </tr>
-        @foreach (var parkingSpace in Model)
-        {
+<div class="container-xl Stilos-tabla">
+    <table class="table dataTables_wrapper display responsive nowrap">
+        <thead>
             <tr>
-                <td>@parkingSpace.Address</td>
-                <td>@parkingSpace.Availability</td>
-                <td>@parkingSpace.Cost</td>
-                <td>@parkingSpace.Description</td>
-                <td>@parkingSpace.Height</td>
-                <td>@parkingSpace.Length</td>
-                <td>@parkingSpace.Rating</td>
-                <td>@parkingSpace.Spaces</td>
-                <td>
-                    <ul>
-                        @if (parkingSpace.TimeTable != null)
-                        {
-                            <ul>
+                <th>Dirección</th>
+                <th>Disponibilidad</th>
+                <th>Costo</th>
+                <th>Descripción</th>
+                <th>Altura</th>
+                <th>Longitud</th>
+                <th>Rating</th>
+                <th>Espacios</th>
+                <th>Horario</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var parkingSpace in Model)
+            {
+                <tr>
+                    <td>@parkingSpace.Address</td>
+                    <td>@parkingSpace.Availability</td>
+                    <td>@parkingSpace.Cost</td>
+                    <td>@parkingSpace.Description</td>
+                    <td>@parkingSpace.Height</td>
+                    <td>@parkingSpace.Length</td>
+                    <td>@parkingSpace.Rating</td>
+                    <td>@parkingSpace.Spaces</td>
+                    <td>
+                        <ul>
+                            @if (parkingSpace.TimeTable != null)
+                            {
+                                <ul>
 
-                                @foreach (var entry in parkingSpace.TimeTable)
+                                    @foreach (var entry in parkingSpace.TimeTable)
                                     {
                                         if (entry.Periods != null && entry.Periods.Count > 0)
                                         {
@@ -71,17 +54,17 @@
                                             </ul>
                                         }
                                     }
-                                
-                            </ul>
-                        }
-                        else
-                        {
-                           
-                        }
-                    </ul>
-                </td>
-            </tr>
-        }
+
+                                </ul>
+                            }
+                            else
+                            {
+
+                            }
+                        </ul>
+                    </td>
+                </tr>
+            }
+        </tbody>
     </table>
-</body>
-</html>
+</div>

@@ -5,59 +5,49 @@
 }
 @model List<(AtrevetGroup8.Models.User, int, double,int, int)>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Lista de Ofertantes</title>
-</head>
-<body>
-    <h1>Lista de Usuarios</h1>
-    <style>
-    table {
-        border-collapse: collapse; 
-        width: 100%; 
-        margin-bottom: 20px; 
-    }
+<h1>Lista de Usuarios</h1>
 
-    th, td {
-        border: 1px solid #dddddd; 
-        text-align: left;
-        padding: 8px; 
-    }
-
-    th {
-        background-color: #f2f2f2; 
-    }
-    </style>
-    <table border="1">
-        <tr>
-            <th>Nombre</th>
-            <th>Apellidos</th>
-            <th>CI</th>
-            <th>Correo</th>
-            <th>Teléfono</th>
-            <th>Rol</th>
-            <th>Garages</th>
-            <th>Rating prom</th>
-            <th>Cant Recha</th>
-            <th>Cant Rentals</th>
-            
-        </tr>
-        @foreach (var userTuple in Model)
-        {
+<div class="container-xl Stilos-tabla">
+    <table class="table dataTables_wrapper display responsive nowrap">
+        <thead>
             <tr>
-                <td>@userTuple.Item1.names </td>
-                <td>@userTuple.Item1.lastnames </td>
-                <td>@userTuple.Item1.ci </td>
-                <td>@userTuple.Item1.mail </td>
-                <td>@userTuple.Item1.cellphone </td>
-                <td>@userTuple.Item1.role</td>
-                <td>@userTuple.Item2</td>
-                <td>@userTuple.Item3</td>
-                <td>@userTuple.Item4</td>
-                <td>@userTuple.Item5</td>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>CI</th>
+                <th>Correo</th>
+                <th>Teléfono</th>
+                <th>Rol</th>
+                <th>Garages</th>
+                <th>Rating prom</th>
+                <th>Cant Recha</th>
+                <th>Cant Rentals</th>
+
             </tr>
-        }
+        </thead>
+        <tbody>
+            @foreach (var userTuple in Model)
+            {
+                <tr>
+                    <td>@userTuple.Item1.names </td>
+                    <td>@userTuple.Item1.lastnames </td>
+                    <td>@userTuple.Item1.ci </td>
+                    <td>@userTuple.Item1.mail </td>
+                    <td>@userTuple.Item1.cellphone </td>
+                    <td>@userTuple.Item1.role</td>
+                    <td>@userTuple.Item2</td>
+                    @if (double.IsNaN(@userTuple.Item3))
+                    {
+                        <td>0</td>
+                    }
+                    else
+                    {
+                        <td>@userTuple.Item3</td>
+                    }
+                    <td>@userTuple.Item4</td>
+                    <td>@userTuple.Item5</td>
+                </tr>
+            }
+        </tbody>
     </table>
-</body>
-</html>
+</div>
+   
