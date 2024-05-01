@@ -1,0 +1,87 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model List<AtrevetGroup8.Models.Grage>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Ofertantes</title>
+</head>
+<body>
+    <h1>Lista de Usuarios</h1>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <table border="1">
+        <tr>
+            <th>Dirección</th>
+            <th>Disponibilidad</th>
+            <th>Costo</th>
+            <th>Descripción</th>
+            <th>Altura</th>
+            <th>Longitud</th>
+            <th>Rating</th>
+            <th>Espacios</th>
+            <th>Horario</th>
+        </tr>
+        @foreach (var parkingSpace in Model)
+        {
+            <tr>
+                <td>@parkingSpace.Address</td>
+                <td>@parkingSpace.Availability</td>
+                <td>@parkingSpace.Cost</td>
+                <td>@parkingSpace.Description</td>
+                <td>@parkingSpace.Height</td>
+                <td>@parkingSpace.Length</td>
+                <td>@parkingSpace.Rating</td>
+                <td>@parkingSpace.Spaces</td>
+                <td>
+                    <ul>
+                        @if (parkingSpace.TimeTable != null)
+                        {
+                            <ul>
+
+                                @foreach (var entry in parkingSpace.TimeTable)
+                                    {
+                                        if (entry.Periods != null && entry.Periods.Count > 0)
+                                        {
+                                            <li>@entry.Day:</li>
+                                            <ul>
+                                                @foreach (var period in entry.Periods)
+                                                {
+                                                    <li>@period.StartHour.ToString("00")/@period.EndHour.ToString("00")</li>
+                                                }
+                                            </ul>
+                                        }
+                                    }
+                                
+                            </ul>
+                        }
+                        else
+                        {
+                           
+                        }
+                    </ul>
+                </td>
+            </tr>
+        }
+    </table>
+</body>
+</html>
