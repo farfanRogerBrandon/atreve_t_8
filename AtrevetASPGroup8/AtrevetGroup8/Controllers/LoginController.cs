@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Firebase.Auth;
 using Firebase.Auth.Providers;
-using FirebaseAdmin.Auth;
 
 namespace AtrevetGroup8.Controllers
 {
@@ -50,6 +49,12 @@ namespace AtrevetGroup8.Controllers
             }
         }
 
-        
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+            return RedirectToAction("Index", "Login");
+
+        }
+
     }
 }

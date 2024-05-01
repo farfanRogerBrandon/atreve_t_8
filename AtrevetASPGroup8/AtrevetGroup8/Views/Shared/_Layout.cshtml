@@ -44,10 +44,17 @@
 
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
-                <!-- Navbar Search -->
                 <li>
-                    <div class="info">
-                        <span>Nombre</span>
+                    <div class="btn-group dropstart">
+                        <button class="btn" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="puntos  fas fa-ellipsis-v"></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <hr class="hr-actions">
+                                <a asp-controller="Login" asp-action="Logout">Cerrar Sesión</a>
+                            </li>
+                        </ul>
                     </div>
                 </li>
             </ul>
