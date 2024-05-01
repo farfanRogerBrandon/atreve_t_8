@@ -35,18 +35,45 @@ const Create_Garage = (props) => {
     const handleSubmit = async() => {
         // Handle submission logic here
         // For example, you can send the garage data to a server
+        const timeTable = [
+            {
+                day: "Lunes", periods: []
+            },
+            {
+                day: "Martes", periods: []
+            },
+            {
+                day: "Miercoles", periods: []
+            },
+            {
+                day: "Jueves", periods: []
+            },
+            {
+                day: "Viernes", periods: []
+            },
+            {
+                day: "Sabado", periods: []
+            },
+            {
+                day: "Domingo", periods: []
+            },
+        ]
+
+        const displayName = await mapMaker.getAddressFromCoordinates(location.latitude, location.longitude)
         const garage = {
-            address,
+            address:displayName,
             avialability,
-            cost,
+            cost:parseFloat(cost),
             description,
-            height,
-            width,
-            length,
+            height:parseFloat(height),
+            width:parseFloat(width),
+            length:parseFloat(length),
             location,
-            rating,
-            spaces,
-            state
+            rating:parseFloat(rating),
+            spaces:parseFloat(spaces),
+            state,
+            timeTable: timeTable,
+            specialDates: []
         };
 
         try {

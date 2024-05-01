@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView  } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert  } from 'react-native';
 import Create_GarageStyles from '../../Styles/create_garageStyles';
 import MapView, { MapMarker, Marker } from 'react-native-maps';
 import MapMaker from '../../Tools/Maper';
@@ -67,18 +67,21 @@ const Edit_Garage = (props) => {
     const handleSubmit = async() => {
         // Handle submission logic here
         // For example, you can send the garage data to a server
+        const displayName = await mapMaker.getAddressFromCoordinates(location.latitude, location.longitude)
         const garageUpdated = {
-            address,
+            address:displayName,
             avialability,
-            cost,
+            cost:parseFloat(cost),
             description,
-            height,
-            width,
-            length,
+            height:parseFloat(height),
+            width:parseFloat(width),
+            length:parseFloat(length),
             location,
-            rating,
-            spaces,
-            state
+            rating:parseFloat(rating),
+            spaces:parseFloat(spaces),
+            state,
+            timeTable: timeTable,
+            specialDates: []
         };
 
         try {
