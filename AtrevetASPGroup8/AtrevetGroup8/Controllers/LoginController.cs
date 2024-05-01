@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Firebase.Auth;
 using Firebase.Auth.Providers;
+using AtrevetGroup8.Models;
 
 namespace AtrevetGroup8.Controllers
 {
@@ -30,16 +31,23 @@ namespace AtrevetGroup8.Controllers
 
             try
             {
-                var user = await authClient.SignInWithEmailAndPasswordAsync(username, password);
-                var claims = new List<Claim>
+                UserImpl userImpl = new UserImpl();
+
+                if (await userImpl.GetRole(username))
                 {
-                    new Claim(ClaimTypes.Name, username),
-                    new Claim(ClaimTypes.Role, "Administrador")
-                };
-                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                var principal = new ClaimsPrincipal(identity);
-                HttpContext.SignInAsync(principal);
-                return RedirectToAction("Index", "Home");
+                    var user = await authClient.SignInWithEmailAndPasswordAsync(username, password);
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, username),
+                        new Claim(ClaimTypes.Role, "Administrador")
+                    };
+                    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var principal = new ClaimsPrincipal(identity);
+                    HttpContext.SignInAsync(principal);
+                    return RedirectToAction("Index", "Home");
+                }
+                ViewBag.Error = "Ingreso solo de administradores";
+                return View();
             }
             catch (Firebase.Auth.FirebaseAuthException ex)
             {

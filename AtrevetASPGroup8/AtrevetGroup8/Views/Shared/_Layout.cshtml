@@ -47,12 +47,12 @@
                 <li>
                     <div class="btn-group dropstart">
                         <button class="btn" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="puntos  fas fa-ellipsis-v"></i>
+                            <i class="puntos  fas fa-ellipsis-v" style="color:white"></i>
                         </button>
                         <ul class="dropdown-menu">
                             <li>
                                 <hr class="hr-actions">
-                                <a asp-controller="Login" asp-action="Logout">Cerrar Sesión</a>
+                                <a asp-controller="Login" asp-action="Logout" class="nav-link">Cerrar Sesión</a>
                             </li>
                         </ul>
                     </div>
@@ -97,8 +97,8 @@
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a asp-controller="Garage" asp-action="Index" class="nav-link">
-                                <i class="nav-icon fas fa-solid far fa-garage" style="color:white"></i>
+                            <a asp-controller="Garage" asp-action="Index" class="nav-link" style="background-color: #63CAA7; color: white;">
+                                <i class="nav-icon fas fa-solid fa-parking" style="color:white"></i>
                                 <p style="color:white">Garages</p>
                             </a>
                         </li>

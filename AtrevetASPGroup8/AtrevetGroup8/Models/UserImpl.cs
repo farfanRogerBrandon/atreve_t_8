@@ -170,6 +170,30 @@ namespace AtrevetGroup8.Models
             return clients;
         }
 
+        public async Task<bool> GetRole(string username)
+        {
+            QuerySnapshot querySnapshot = await db.Collection("user").WhereEqualTo("mail",username).GetSnapshotAsync();
+
+            foreach (DocumentSnapshot documentSnapshot in querySnapshot.Documents)
+            {
+                User user = new User();
+                try
+                {
+                    user = documentSnapshot.ConvertTo<User>();
+                }
+                catch (Exception ex)
+                {
+
+                }
+                if (user.role == "admin")
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public async Task<List<(User, int, double, int, int)>> GetOfferor()
         {
             List<(User,int,double,int, int)> offerors = new List<(User, int, double, int, int)>();
