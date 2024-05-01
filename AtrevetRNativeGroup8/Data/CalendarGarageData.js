@@ -18,15 +18,16 @@ const GetTimeTable=async(idGarage)=>{
               specialDates: myTime.data().specialDates
         }
 
-        console.log(dates.specialDates[0]. day)
+        //console.log(dates.specialDates[0]. day)
         return dates;
     
     } catch (error) {
+        console.log("Hola");
         let dates ={
             timeTable:[],
             specialDates: []
         }
-        console.log(error);
+        console.log(error.message);
         return dates;
     }
    

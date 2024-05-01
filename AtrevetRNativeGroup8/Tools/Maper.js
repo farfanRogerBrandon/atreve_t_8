@@ -8,7 +8,7 @@ class MapMaker{
           );
       
           if (response.data.display_name) {
-            console.log(response.data);
+            console.log(response.data.display_name);
             const address = response.data.display_name;
             return address;
           } else {

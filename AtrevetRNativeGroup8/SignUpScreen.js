@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView, Modal, Keyboard, Alert } from 'react-native';
 import {createuser} from './Data/usersdata';
+import { useNavigation } from '@react-navigation/native';
 
 
 
 const SignUpScreen = () => {
-
+    const n = useNavigation();
   const [formData, setFormData] = useState({
     ci: '',
     lastnames: '',
@@ -41,14 +42,16 @@ const SignUpScreen = () => {
     // Llamar a la función de registro de usuario
     createuser(formData)
       .then(() => {
-        // Limpiar el teclado después de enviar el formulario
+        
         Keyboard.dismiss();
-        // Aquí puedes manejar la redirección o mostrar un mensaje de éxito
+        n.replace("LoginScreen"); Alert.alert("Éxito","Se ha registrado");
       })
       .catch(error => {
-        // Manejar errores de registro
+        Alert.alert("Error","Verifique su conexión, ha habido un error");
         console.error("Error registrando usuario:", error);
       });
+
+      
   };
 
   return (

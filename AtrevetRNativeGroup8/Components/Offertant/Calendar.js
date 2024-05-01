@@ -8,10 +8,14 @@ import DateTimePicker from "@react-native-community/datetimepicker"
 
 import { FontAwesome, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons"
 import { GetDateTraducedWithOutH, convertToFirestoreTimestamp } from '../../Tools/TransformDate';
+import { useNavigation, useRoute } from '@react-navigation/native';
 //import DateTimePicker from 'react-native-modal-datetime-picker';
 const Calendar = () => {
     // Supongamos que estos son los datos para cada día
+    const n = useNavigation();
+    const r = useRoute();
 
+    const {id} = r.params;
 
     const [sDate, setTitulationDate] = useState(new Date());
 const [showDatePicker, setShowDatePicker] = useState(false);
@@ -68,10 +72,13 @@ const [showDatePicker, setShowDatePicker] = useState(false);
 
 
     const getTimeTable = async () => {
-        let timeTable = await GetTimeTable("gFS8PibCfpmgGOoA75sw");
+        let timeTable = await GetTimeTable(id);
 
         setDaysData(timeTable.timeTable);
         setSpecialDays(timeTable.specialDates);
+        console.log(timeTable.specialDates);
+        console.log(timeTable.timeTable);
+
     }
     useEffect(() => {
         getTimeTable();
@@ -79,9 +86,10 @@ const [showDatePicker, setShowDatePicker] = useState(false);
 
 
     const saveCalendar = async () => {
-        let res = await SaveCalendar("gFS8PibCfpmgGOoA75sw", daysData, specialDays)
+        let res = await SaveCalendar(id, daysData, specialDays)
         if (res) {
             Alert.alert("Éxito", "Se ha guardado con éxito");
+            n.replace("ListGarages");
         }
     }
 
@@ -552,7 +560,7 @@ const deleteSpecialDay=(item)=>{
 
 
             {
-                specialDays != [] ?
+                specialDays.length>0 ?
                     <FlatList
                         style={{ elevation: 5 }}
                         data={specialDays}
@@ -569,7 +577,9 @@ const deleteSpecialDay=(item)=>{
 
             <View style={[stylesNf.horizontal, { marginTop: 5, alignSelf: "center", alignItems: "center", justifyContent: "center" }]}>
                 <TouchableOpacity
-
+                    onPress={()=>{
+                        n.replace("ListGarages");
+                    }}
 
                     style={{ alignSelf: "center", backgroundColor: "red", padding: 10, borderRadius: 10, margin: 10 }}
                 >

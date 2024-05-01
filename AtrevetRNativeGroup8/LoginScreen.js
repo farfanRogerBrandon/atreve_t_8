@@ -5,14 +5,15 @@ import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'; // Importar
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { appFirebase } from './Data/firebaseConfig'; // Importar la configuración de Firebase
 import { setUserLogued } from "./Data/usersdata"
+import { useNavigation } from '@react-navigation/native';
 const auth = getAuth(appFirebase); // Obtener la instancia de autenticación de Firebase
 const db = getFirestore(appFirebase);
 
-const LoginScreen = ({ onNavigate }) => {
+const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-
+const n = useNavigation();
   const handleLogin = async () => {
     try {
       // Iniciar sesión con el correo electrónico y la contraseña proporcionados
@@ -31,9 +32,9 @@ const LoginScreen = ({ onNavigate }) => {
       await setUserLogued(muser);
       
       if (userRole === 'client') {
-        console.log('Redirigir a la página del Cliente');
+        n.replace("ClientNavigation")
       } else if (userRole === 'offeror') {
-        console.log('Redirigir a la página del Ofertante');
+        n.replace("OfNavigation")
       } else {
         console.log('Rol desconocido');
       }
@@ -75,7 +76,7 @@ const LoginScreen = ({ onNavigate }) => {
         <Text style={styles.loginButtonText}>Entrar</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={onNavigate} style={styles.button}>
+      <TouchableOpacity onPress={()=>{n.navigate("SignUpScreen")}} style={styles.button}>
         <Text style={styles.buttonText}>Crear cuenta/No tienes una cuenta??</Text>
       </TouchableOpacity>
 
