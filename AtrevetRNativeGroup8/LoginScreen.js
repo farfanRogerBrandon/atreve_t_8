@@ -7,10 +7,10 @@ import { setUserLogued } from "./Data/usersdata"
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
+import * as WebBrowser from 'expo-web-browser';
+import * as Google from "expo-auth-session/providers/google"
 
 import { GoogleAuthProvider, onAuthStateChanged, signInWithCredential } from 'firebase/auth';
-import * as Google from 'expo-auth-session/providers/google';
-import * as WebBrowser from 'expo-web-browser';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -22,9 +22,10 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const n = useNavigation();
-  const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
-    clientId: '233656417186-81up989jhsno94khcv141m4gtk4crt52.apps.googleusercontent.com',
-    redirectUri: `com.anonymous.AtrevetRNativeGroup8`,
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    iosClientId:"",
+
+    androidClientId:"233656417186-81up989jhsno94khcv141m4gtk4crt52.apps.googleusercontent.com"
   });
   const handleLogin = async () => {
     try {
