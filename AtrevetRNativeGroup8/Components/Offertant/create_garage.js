@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import Create_GarageStyles from '../../Styles/create_garageStyles';
 import MapView, { MapMarker, Marker } from 'react-native-maps';
