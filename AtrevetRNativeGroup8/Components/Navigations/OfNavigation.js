@@ -9,6 +9,7 @@ import { Platform } from 'react-native';
 import ListCars from '../Client/ListCars';
 import ListGarages from '../Offertant/ListGarages';
 import GaragesNavigation from './GaragesNavigation';
+import OffersNav from './OffersNav';
 
 const Tab = createBottomTabNavigator();
 
@@ -37,7 +38,7 @@ function MyTabs(){
             >
             <Tab.Screen 
                 name="Ofertas" 
-                component={GaragesNavigation}
+                component={OffersNav}
                 options={{           
                             
                     tabBarIcon: ({ color, size}) => (

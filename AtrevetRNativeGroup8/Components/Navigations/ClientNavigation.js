@@ -8,6 +8,7 @@ import { Entypo, Ionicons, FontAwesome5, EvilIcons, FontAwesome, Fontisto, FontA
 import { Platform } from 'react-native';
 import ListCars from '../Client/ListCars';
 import CarsNavigation from './CarsNavigation';
+import RequestGarageNavig from './RequestGaragNavig';
 
 const Tab = createBottomTabNavigator();
 
@@ -36,7 +37,7 @@ function MyTabs(){
             >
             <Tab.Screen 
                 name="Reservas" 
-                component={CarsNavigation}
+                component={RequestGarageNavig}
                 options={{           
                             
                     tabBarIcon: ({ color, size}) => (

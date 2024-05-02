@@ -118,10 +118,14 @@ const SendOffer = async (data) => {
         data.updateDate = serverTimestamp();
 
         let col = collection(db, "offer");
-        let res = (await addDoc(col, data)).id;
+        let res = (await addDoc(col, data));
 
+        let result = {
+            id: res.id,
+            data: data
+        }
         console.log("Añadidio: ", res);
-        return res;
+        return result;
 
 
 

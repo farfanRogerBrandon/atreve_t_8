@@ -14,6 +14,7 @@ import { FontAwesome } from '@expo/vector-icons';
 
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { Picker } from '@react-native-picker/picker';
+import { useNavigation, useRoute } from '@react-navigation/native';
 const RequestGarage = () => {
 
     const [garages, setGarages] = useState([]);
@@ -58,7 +59,10 @@ const RequestGarage = () => {
     const [msg, setMsg] = useState("");
 
 
+    const n = useNavigation();
+    const r = useRoute();
 
+    const { location } = r.params;
     const handleDateChange = (event, date) => {
 
         setShowDatePicker(false);
@@ -196,7 +200,8 @@ const RequestGarage = () => {
 
 
     const verifyAvailability = async () => {
-        //verifiquemos si entra, lugo si hay reservas que choquen, luego si el periodo entra en medio de periodos disponible, verificar día especial
+        try {
+             //verifiquemos si entra, lugo si hay reservas que choquen, luego si el periodo entra en medio de periodos disponible, verificar día especial
         if (garage.data().height < selectedCar.height || garage.data().width < selectedCar.width || garage.data().length < selectedCar.length) {
             Alert.alert("No disponible", "Las dimensiones del vehículo son mayores a las del espacio del garaje");
 
@@ -269,17 +274,22 @@ const RequestGarage = () => {
 
 
 
+        } catch (error) {
+            console.log(error);
+        }
+       
 
 
 
     }
 
 
-    const sendOffer=async()=>{
-        let start = parseFloat(selectedStartTime.replace(":", ""));
+    const sendOffer = async () => {
+        try {
+            let start = parseFloat(selectedStartTime.replace(":", ""));
         let end = parseFloat(selectedENDTime.replace(":", ""));
 
-        let data ={
+        let data = {
             cost: parseFloat(priceo),
             beginDate: sDate,
             endDate: sDate,
@@ -287,25 +297,31 @@ const RequestGarage = () => {
             endHour: end,
             gID: garage.id,
             garage: garage.data(),
-            msg:msg,
+            msg: msg,
             user: myuser.data,
-            garageRef:"",
-            offeror:{},
-        registrationDate: new Date(),
-        updateDate : new Date(),
-        status:3,
-        vehicle: selectedCar.toJSON()
+            garageRef: "",
+            offeror: {},
+            registrationDate: new Date(),
+            updateDate: new Date(),
+            status: 3,
+            vehicle: selectedCar.toJSON(),
+            statusNegociation: 2
         }
 
-        let res = await SendOffer( data)
-        if(res!=""){
+        let res = await SendOffer(data)
+        if (res != "") {
             Alert.alert("Éxito", "Se ha enviado su oferta, espere por una respuesta del ofertante");
-
+            
+            n.navigate("NegociationClient", {offer:res});
         }
-        else{
+        else {
             Alert.alert("Error", "Ha ocurrido un error inesperado, verifique su conexión");
 
         }
+        } catch (error) {
+            console.log(error);
+        }
+        
     }
     return (
 
@@ -377,10 +393,10 @@ const RequestGarage = () => {
 
                     style={[stylesMap.MyMap2, { height: RFValue(heightMap) }]}
                     initialRegion={{
-                        latitude: -17.396844
+                        latitude: location.latitude
 
                         ,
-                        longitude: -66.159927,
+                        longitude: location.longitude,
                         latitudeDelta: 0.0041022,
                         longitudeDelta: 0.00421,
                     }}
@@ -390,9 +406,9 @@ const RequestGarage = () => {
 
 
                         coordinate={{
-                            latitude: -17.396844
+                            latitude: location.latitude
                             ,
-                            longitude: -66.159927,
+                            longitude: location.longitude
                         }}
                         title="Mi ubicación"
                         description="Mi ubi"
@@ -437,24 +453,6 @@ const RequestGarage = () => {
 
                         <View style={{ width: "100%", height: 280, borderTopLeftRadius: 20, borderTopRightRadius: 20, marginBottom: "auto", marginTop: -20, backgroundColor: "beige" }}>
                             <ScrollView style={{ width: "100%", height: 100 }}>
-
-                                <Text style={{ margin: 8, fontSize: RFValue(16), color: "#00c0a9", fontWeight: "bold" }} >
-                                    Descripción: {garage.data().description}
-                                </Text>
-                                <Text style={{ margin: 8, fontSize: RFValue(16), color: "#00c0a9", fontWeight: "bold" }} >
-                                    Dimensiones de cada espacio:{garage.data().width}mts. de ancho, {garage.data().height}mts. de alto y {garage.data().length}mts. de largo
-
-                                </Text>
-                                <Text style={{ margin: 8, fontSize: RFValue(16), color: "#00c0a9", fontWeight: "bold" }} >
-                                    Cantidad de espacios máxima: {garage.data().spaces}
-                                </Text>
-                                <Text style={{ margin: 8, fontSize: RFValue(16), color: "#00c0a9", fontWeight: "bold" }} >
-                                    Calificación Promedio: {garage.data().rating}
-                                </Text>
-
-                                <Text style={{ margin: 8, fontSize: RFValue(16), color: "#00c0a9", fontWeight: "bold" }} >
-                                    Dirección: {garage.data().address}
-                                </Text>
                                 <View style={stylesNf.horizontal}>
 
                                     <TouchableOpacity onPress={() => { setHeight(550), setGarage(null) }} style={{ backgroundColor: "#ffc172", padding: 4, alignSelf: "center", borderRadius: 9 }} >
@@ -476,6 +474,29 @@ const RequestGarage = () => {
 
 
                                 </View>
+
+                                <Text style={{ margin: 8, fontSize: RFValue(16), color: "#00c0a9", fontWeight: "bold" }} >
+                                    Descripción: {garage.data().description}
+                                </Text>
+                                <Text style={{ margin: 8, fontSize: RFValue(16), color: "#00c0a9", fontWeight: "bold" }} >
+                                    Dimensiones de cada espacio: <Text style={{ fontWeight: "normal" }}>{garage.data().width}mts. de ancho, {garage.data().height}mts. de alto y {garage.data().length}mts. de largo</Text>
+
+                                </Text>
+                                <Text style={{ margin: 8, fontSize: RFValue(16), color: "#00c0a9", fontWeight: "bold" }} >
+                                    Cantidad de espacios máxima: <Text style={{ fontWeight: "normal" }}>{garage.data().spaces}</Text>
+
+
+                                </Text>
+                                <Text style={{ margin: 8, fontSize: RFValue(16), color: "#00c0a9", fontWeight: "bold" }} >
+                                    Calificación Promedio: {garage.data().rating}
+                                </Text>
+                                <Text style={{ margin: 8, fontSize: RFValue(16), color: "#00c0a9", fontWeight: "bold" }} >
+                                    Costo Bs/hora: {garage.data().cost}
+                                </Text>
+
+                                <Text style={{ margin: 8, fontSize: RFValue(16), color: "#00c0a9", fontWeight: "bold" }} >
+                                    Dirección: {garage.data().address}
+                                </Text>
 
 
 
@@ -510,7 +531,7 @@ const RequestGarage = () => {
                 visible={modal2Visible}
                 onRequestClose={() => {
 
-                    setModalVisible(!modal2Visible);
+                    setModal2Visible(!modal2Visible);
                 }}>
                 <View style={{ alignSelf: "center", justifyContent: "center", height: "77%", marginTop: 10 }}>
 
@@ -588,17 +609,17 @@ const RequestGarage = () => {
 
                                     <TextInput style={stylesNf.input}
                                         placeholder='Ingrese el precio a ofrecer (Bs)'
-                                value={priceo+""}
-                                onChangeText={(t)=>setPriceo(t)}
-                                keyboardType="numeric"
-
+                                        value={priceo + ""}
+                                        onChangeText={(t) => setPriceo(t)}
+                                        keyboardType="numeric"
+returnKeyType="done"
                                     ></TextInput>
                                     <Text>Precio estimado del garaje (por hora) {garage.data().cost} Bs</Text>
-                                    <TextInput  style={stylesNf.input}
+                                    <TextInput style={stylesNf.input}
                                         value={msg}
-                                        onChangeText={(text)=>setMsg(text)}
+                                        onChangeText={(text) => setMsg(text)}
                                         placeholder='Ingrese un mensaje'>
-                                        
+
 
 
                                     </TextInput>
@@ -616,7 +637,7 @@ const RequestGarage = () => {
 
 
                                     </TouchableOpacity>
-                                   
+
 
                                 </>
 

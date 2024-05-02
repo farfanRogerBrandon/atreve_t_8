@@ -37,7 +37,7 @@ export default function App() {
 
   return (
     <>
-    <MyStatusBar/>
+   
       <StartNavigator></StartNavigator>
     </>
   );

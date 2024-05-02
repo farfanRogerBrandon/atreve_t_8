@@ -8,7 +8,7 @@ const ListCarStyles = StyleSheet.create({
     },
     headerTopBar: {
         backgroundColor: "#26798e",
-        paddingHorizontal: 12,
+        paddingHorizontal: 17,
         paddingVertical: 10,
         borderRadius: 10,
         elevation: 2,
