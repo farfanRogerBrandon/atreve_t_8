@@ -1,5 +1,6 @@
 ﻿using AtrevetGroup8.Models;
 using AtrevetGroup8.Utils;
+using Firebase.Auth;
 using Google.Cloud.Firestore;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -56,6 +57,26 @@ namespace AtrevetGroup8.Controllers
             var clients = await user.NroRejectedOffers();
 
             return View(clients);
+        }
+
+        public async Task<IActionResult> Delete(string id)
+        {
+            UserImpl userImpl = new UserImpl();
+
+            var user = await userImpl.DatosUserEliminando(id);
+
+            return View(user);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(string id)
+        {
+            UserImpl userImpl = new UserImpl();
+
+            await userImpl.DeleteLogicUser(id);
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

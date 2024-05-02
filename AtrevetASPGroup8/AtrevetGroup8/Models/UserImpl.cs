@@ -24,7 +24,7 @@ namespace AtrevetGroup8.Models
                     throw;
                 }
 
-                if(user.role == "client")
+                if(user.role == "client" && user.state == 1)
                 {
                     clients.Add(user);
                 }
@@ -159,7 +159,7 @@ namespace AtrevetGroup8.Models
                 {
                     QuerySnapshot querySnapshot1 = await db.Collection("offer")
                         .WhereEqualTo("user.ci", user.ci)
-                        .WhereEqualTo("estado", 0)
+                        .WhereEqualTo("statusNegociation", 0)
                         .GetSnapshotAsync();
                     
                     int RejectedOffers = querySnapshot1.Count;
@@ -211,7 +211,7 @@ namespace AtrevetGroup8.Models
                 {
                     Console.WriteLine(ex);
                 }
-                if(user.role == "offeror")
+                if(user.role == "offeror" && user.state == 1)
                 {
                     int Count = await GetCountGrage(documentSnapshot.Reference);
                     double RatingProm = await GetRatingProm(documentSnapshot.Reference);
@@ -261,6 +261,7 @@ namespace AtrevetGroup8.Models
 
             return recha;
         }
+
         public async Task<int> GetCountRental(DocumentReference userId)
         {
             int rentals = 0;
@@ -277,5 +278,43 @@ namespace AtrevetGroup8.Models
 
             return rentals;
         }
+
+        public async Task<User> DatosUserEliminando(string userId)
+        {
+
+            DocumentReference userRef = db.Collection("user").Document(userId);
+            DocumentSnapshot snapshot = await userRef.GetSnapshotAsync();
+
+            if (snapshot.Exists)
+            {
+                User user = snapshot.ConvertTo<User>();
+                if (user.role == "client" || user.role == "offeror")
+                {
+                    return user;
+                }
+            }
+
+            return null;
+        }
+
+        public async Task DeleteLogicUser(string userId)
+        {
+            DocumentReference userRef = db.Collection("user").Document(userId);
+            DocumentSnapshot snapshot = await userRef.GetSnapshotAsync();
+
+            if (snapshot.Exists)
+            {
+                User user = snapshot.ConvertTo<User>();
+
+                if (user.role == "client" || user.role == "offeror")
+                {
+                    user.state = 0;
+
+                    await userRef.SetAsync(user);
+
+                }
+            }
+        }
+
     }
 }

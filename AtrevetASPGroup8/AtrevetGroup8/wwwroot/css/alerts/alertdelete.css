@@ -1,0 +1,11 @@
+﻿div:where(.swal2-container) div:where(.swal2-popup) {
+    border-radius: 21px !important;
+}
+
+.swal2-icon.swal2-warning {
+    color: #e7260c !important;
+}
+
+div:where(.swal2-icon).swal2-warning {
+    border-color: #e07d7d !important;
+}

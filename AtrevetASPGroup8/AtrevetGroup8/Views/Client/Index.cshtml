@@ -39,7 +39,7 @@
                 <th>
                     Celular
                 </th>
-                <th>Opciones</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -62,7 +62,9 @@
                         @Html.DisplayFor(modelItem => item.cellphone)
                     </td>
                     <td>
-                        <a class="icon-borrar dropdown-item" asp-action="Delete" asp-route-id=""><i class="mr-2 fas fa-trash-alt"></i>Borrar</a>
+                        <a class="icon-borrar dropdown-item delete-confirm" asp-action="Delete" asp-route-id="@item.Id">
+                            <i class="mr-2 fas fa-trash-alt"></i>Borrar
+                        </a>
                     </td>
                 </tr>
             }
@@ -70,6 +72,8 @@
     </table>
 
 </div>
+
+
 
 @*para la Impresion de Datos*@
 @section Scripts {

@@ -7,6 +7,9 @@ namespace AtrevetGroup8.Models
 
     public class User : FireBaseConnection
     {
+        [FirestoreDocumentId]
+        public string Id { get; set; }
+
         [FirestoreProperty]
         public string names { get; set; }
         [FirestoreProperty]
