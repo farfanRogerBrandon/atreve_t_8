@@ -5,22 +5,10 @@ import ListCarStyles from '../../Styles/ListCarsStyles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { getCars } from '../../Data/CarsGet';
 import { logicalDeleteCarById } from '../../Data/CarsEdit';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ListCars = (props) => {
     const [data, setData] = useState([]);
-
-    useEffect(() => {
-        const getCarsList = async()=>{
-            try {
-                let newData = await getCars("Iq3zIGu8BQtN3d0Gcuhh")
-                setData(newData);
-                console.log(newData);
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        getCarsList()
-    },[])
 
     const handleDelete = async (carId) => {
         try {
@@ -32,6 +20,35 @@ const ListCars = (props) => {
             // Handle error (e.g., display error message)
         }
     };
+
+    const getCarsList = async()=>{
+        try {
+            let newData = await getCars(myuser.id)
+            setData(newData);
+            console.log(newData);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const [myuser, setuser] = useState("");
+
+  var muser = "";
+  const getLocalUser = async () => {
+    try {
+      muser = await AsyncStorage.getItem("user");
+      let muserJson = muser ? JSON.parse(muser) : null;
+      setuser(muserJson);
+      await getCarsList();
+    }
+    catch (e) {
+      console.error(e);
+    }
+  }
+
+  useEffect(()=>{
+    getLocalUser();
+  }, [data]);
 
     const renderItem = ({item, index}) => {
         return(

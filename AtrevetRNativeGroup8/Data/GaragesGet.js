@@ -4,14 +4,17 @@ import { getFirestore,doc,getDoc,collection,where,getDocs, updateDoc, addDoc, se
  
 const db = getFirestore(appFirebase);
 
-const getGarages = async (id) => {
+const getGarages = async (userId) => {
     const data = [];
     const garages = collection(db,"grage");
-    const q = query(garages,where("state","==",1)); //,where("ofid","==",id)
+    const q = query(garages,where("state","==",1));
 
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-        data.push({ id: doc.id, ...doc.data() }); // Include the ID along with the data
+        const garageData = doc.data();
+        if (garageData.ofid == userId) {
+            data.push({ id: doc.id, ...garageData }); // Include the ID along with the data
+        }
     });
 
     return data;

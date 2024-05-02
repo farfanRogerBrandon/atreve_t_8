@@ -7,22 +7,20 @@ import { getGarages } from '../../Data/GaragesGet';
 import { logicalDeleteGarageById } from '../../Data/GarageEdit';
 import { FontAwesome6 } from '@expo/vector-icons';
 import { RFValue } from 'react-native-responsive-fontsize';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ListGarages = (props) => {
     const [data, setData] = useState([]);
 
-    useEffect(() => {
-        const getGaragesList = async () => {
-            try {
-                let newData = await getGarages("Iq3zIGu8BQtN3d0Gcuhh")
-                setData(newData);
-                console.log(newData);
-            } catch (error) {
-                console.log(error);
-            }
+    const getGaragesList = async () => {
+        try {
+            let newData = await getGarages(myuser.id)
+            setData(newData);
+            console.log(newData);
+        } catch (error) {
+            console.log(error);
         }
-        getGaragesList()
-    }, [])
+    };
 
     const handleDelete = async (garageId) => {
         try {
@@ -34,6 +32,25 @@ const ListGarages = (props) => {
             // Handle error (e.g., display error message)
         }
     };
+
+    const [myuser, setuser] = useState("");
+
+  var muser = "";
+  const getLocalUser = async () => {
+    try {
+      muser = await AsyncStorage.getItem("user");
+      let muserJson = muser ? JSON.parse(muser) : null;
+      setuser(muserJson);
+      await getGaragesList();
+    }
+    catch (e) {
+      console.error(e);
+    }
+  }
+
+  useEffect(()=>{
+    getLocalUser();
+  }, [data])
 
     const renderItem = ({ item, index }) => {
         return (

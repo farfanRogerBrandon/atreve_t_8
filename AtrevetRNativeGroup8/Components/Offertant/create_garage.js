@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import Create_GarageStyles from '../../Styles/create_garageStyles';
 import MapView, { MapMarker, Marker } from 'react-native-maps';
 import MapMaker from '../../Tools/Maper';
 import { insertGarage } from '../../Data/GarageInsert';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Create_Garage = (props) => {
     
@@ -73,7 +74,9 @@ const Create_Garage = (props) => {
             spaces:parseFloat(spaces),
             state,
             timeTable: timeTable,
-            specialDates: []
+            specialDates: [],
+            ofid: myuser.id,
+            offerorId: ""
         };
 
         try {
@@ -88,6 +91,25 @@ const Create_Garage = (props) => {
 
         console.log('Submitted:', { address, cost, height, width, length, description, location });
     };
+
+    const [myuser, setuser] = useState("");
+
+    var muser = "";
+    const getLocalUser = async () => {
+        try {
+        muser = await AsyncStorage.getItem("user");
+        let muserJson = muser ? JSON.parse(muser) : null;
+        setuser(muserJson);
+        // await getRentals(muserJson.id);
+        }
+        catch (e) {
+        console.error(e);
+        }
+    }
+
+    useEffect(()=>{
+        getLocalUser();
+    })
 
   return (
     <ScrollView contentContainerStyle={Create_GarageStyles.scrollViewContent}>
