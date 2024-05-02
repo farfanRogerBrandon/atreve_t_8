@@ -6,6 +6,8 @@ const db = getFirestore(appFirebase);
 
 const insertCars = async (car) => {
     try{
+
+        car.clientId = doc(db, "user", car.cID);
         await addDoc(collection(db,"car"), car);
     }
     catch{

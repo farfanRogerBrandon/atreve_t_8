@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import Create_CarStyles from '../../Styles/create_carStyles';
 import { insertCars } from '../../Data/CarsInsert';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Create_Car = (props) => {
     const [plate, setLicensePlate] = useState('');
@@ -20,7 +21,9 @@ const Create_Car = (props) => {
             width:parseFloat(width),
             length:parseFloat(length),
             description,
-            state
+            state,
+            cID: myuser.id,
+            clientId:""
         };
 
         try {
@@ -36,6 +39,25 @@ const Create_Car = (props) => {
         console.log('Submitted:', { plate, height, width, length, description });
     };
 
+    const [myuser, setuser] = useState("");
+
+
+  var muser = "";
+  const getLocalUser = async () => {
+    try {
+      muser = await AsyncStorage.getItem("user");
+      let muserJson = muser ? JSON.parse(muser) : null;
+      setuser(muserJson);
+     // await getRentals(muserJson.id);
+    }
+    catch (e) {
+      console.error(e);
+    }
+  }
+
+  useEffect(()=>{
+    getLocalUser();
+  })
   return (
     <ScrollView contentContainerStyle={Create_CarStyles.scrollViewContent}>
         <View style={Create_CarStyles.container}>

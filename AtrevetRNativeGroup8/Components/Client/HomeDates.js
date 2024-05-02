@@ -61,6 +61,21 @@ const HomeDates = () => {
   }
 
 
+  const ampliate = async (loc)=>{
+    let { status } = await Location.requestForegroundPermissionsAsync();
+
+    if (status !== 'granted') {
+
+      Alert.alert("Error", "Debe permitir acceso a su ubicación")
+
+      return;
+    }
+    let location = await Location.getCurrentPositionAsync({});
+
+    n.navigate("AmpliateDate", { userLocation: location.coords, garageLocation:loc });
+
+  }
+
 
   return (
     <View style={ListCarStyles.container}>
@@ -92,12 +107,15 @@ const HomeDates = () => {
                 <Text style={{ fontWeight: "normal" }}>Descripción: {doc.data.offer.vehicle.description}</Text>
                 <Text style={{ fontWeight: "normal" }}>Placa: {doc.data.offer.vehicle.plate}</Text>
 
+                <Text style={{ fontWeight: "normal" }}>Estado: {doc.data.status}</Text>
+
                 <View style={stylesNf.horizontal}>
 
+                 
                   <TouchableOpacity style={{ backgroundColor: "#ffc172", padding: 4, alignSelf: "center", borderRadius: 9 }}
-
+                        onPress={()=>{ampliate(doc.data.offer.garage.location)}}
                   >
-                    <Text>Rechazar</Text>
+                    <Text>Ampliar</Text>
                   </TouchableOpacity>
 
                 </View>

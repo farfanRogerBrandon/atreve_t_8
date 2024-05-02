@@ -23,7 +23,6 @@ const HomeOffers = () => {
   const [offers, setOffers] = useState([]);
 
   const [garagesIds, setGaragesIds] = useState([]);
-  const [myuser, setuser] = useState("");
 
 const [unSub, setUnsub] = useState(null);
 
@@ -33,7 +32,10 @@ const [unSub, setUnsub] = useState(null);
     getLocalUser();
     
   }, [])
+  const [myuser, setuser] = useState("");
+
   var muser = "";
+
   const getLocalUser = async () => {
     try {
       muser = await AsyncStorage.getItem("user");
@@ -45,7 +47,6 @@ const [unSub, setUnsub] = useState(null);
       console.error(e);
     }
   }
-
 
   const susc = async (iduser) => {
     try {
