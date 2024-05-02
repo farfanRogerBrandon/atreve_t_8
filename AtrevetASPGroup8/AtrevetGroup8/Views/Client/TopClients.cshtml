@@ -8,7 +8,7 @@
     <div class="row g-2 align-items-center new-stilos">
         <div class="mx-3 col titulo-Header">
             <!-- Page pre-title -->
-            <div class="page-pretitle">
+            <div class="page-pretitle" >
                 MEJORES
             </div>
             <h2 class="page-title">
@@ -75,14 +75,13 @@
     </table>
 
 </div>
-
 @*para la Impresion de Datos*@
 @section Scripts {
     <script>
         $(document).ready(function () {
             var table = $('#example').DataTable({
                 lengthChange: false,
-                pageLength: 10,
+                pageLength: 5,
                 buttons: [
                     {
                         extend: 'print',
@@ -146,5 +145,3 @@
 
     </script>
 }
-
-
