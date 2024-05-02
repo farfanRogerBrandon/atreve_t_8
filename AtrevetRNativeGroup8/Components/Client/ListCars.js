@@ -10,19 +10,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const ListCars = (props) => {
     const [data, setData] = useState([]);
 
-    useEffect(() => {
-        const getCarsList = async()=>{
-            try {
-                let newData = await getCars(myuser.id)
-                setData(newData);
-                console.log(newData);
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        getCarsList()
-    },[])
-
     const handleDelete = async (carId) => {
         try {
             await logicalDeleteCarById(carId);
@@ -34,8 +21,17 @@ const ListCars = (props) => {
         }
     };
 
-    const [myuser, setuser] = useState("");
+    const getCarsList = async()=>{
+        try {
+            let newData = await getCars(myuser.id)
+            setData(newData);
+            console.log(newData);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
+    const [myuser, setuser] = useState("");
 
   var muser = "";
   const getLocalUser = async () => {
@@ -43,7 +39,7 @@ const ListCars = (props) => {
       muser = await AsyncStorage.getItem("user");
       let muserJson = muser ? JSON.parse(muser) : null;
       setuser(muserJson);
-     // await getRentals(muserJson.id);
+      await getCarsList();
     }
     catch (e) {
       console.error(e);
@@ -52,7 +48,7 @@ const ListCars = (props) => {
 
   useEffect(()=>{
     getLocalUser();
-  })
+  }, [data]);
 
     const renderItem = ({item, index}) => {
         return(

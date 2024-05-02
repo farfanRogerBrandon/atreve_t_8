@@ -12,7 +12,7 @@ const getGarages = async (userId) => {
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
         const garageData = doc.data();
-        if (garageData.ofid === userId) {
+        if (garageData.ofid == userId) {
             data.push({ id: doc.id, ...garageData }); // Include the ID along with the data
         }
     });

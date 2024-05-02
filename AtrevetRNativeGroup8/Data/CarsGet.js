@@ -12,7 +12,7 @@ const getCars = async (userId) => {
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
         const carData = doc.data();
-        if (carData.cID === userId) {
+        if (carData.cID == userId) {
             data.push({ id: doc.id, ...carData }); // Include the ID along with the data
         }
     });
