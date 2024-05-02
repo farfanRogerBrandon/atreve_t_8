@@ -6,6 +6,7 @@ const db = getFirestore(appFirebase);
 
 const insertGarage = async (garage) => {
     try{
+        garage.offerorId = doc(db, "user", garage.ofid);
         await addDoc(collection(db,"grage"), garage);
     }
     catch{

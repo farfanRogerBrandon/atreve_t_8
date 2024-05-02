@@ -5,6 +5,7 @@ import ListCarStyles from '../../Styles/ListCarsStyles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { getCars } from '../../Data/CarsGet';
 import { logicalDeleteCarById } from '../../Data/CarsEdit';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ListCars = (props) => {
     const [data, setData] = useState([]);
@@ -12,7 +13,7 @@ const ListCars = (props) => {
     useEffect(() => {
         const getCarsList = async()=>{
             try {
-                let newData = await getCars("Iq3zIGu8BQtN3d0Gcuhh")
+                let newData = await getCars(myuser.id)
                 setData(newData);
                 console.log(newData);
             } catch (error) {
@@ -32,6 +33,26 @@ const ListCars = (props) => {
             // Handle error (e.g., display error message)
         }
     };
+
+    const [myuser, setuser] = useState("");
+
+
+  var muser = "";
+  const getLocalUser = async () => {
+    try {
+      muser = await AsyncStorage.getItem("user");
+      let muserJson = muser ? JSON.parse(muser) : null;
+      setuser(muserJson);
+     // await getRentals(muserJson.id);
+    }
+    catch (e) {
+      console.error(e);
+    }
+  }
+
+  useEffect(()=>{
+    getLocalUser();
+  })
 
     const renderItem = ({item, index}) => {
         return(

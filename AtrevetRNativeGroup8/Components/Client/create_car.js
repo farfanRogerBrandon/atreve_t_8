@@ -58,6 +58,7 @@ const Create_Car = (props) => {
   useEffect(()=>{
     getLocalUser();
   })
+  
   return (
     <ScrollView contentContainerStyle={Create_CarStyles.scrollViewContent}>
         <View style={Create_CarStyles.container}>
