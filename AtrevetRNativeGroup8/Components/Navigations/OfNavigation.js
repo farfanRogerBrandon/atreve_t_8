@@ -10,6 +10,7 @@ import ListCars from '../Client/ListCars';
 import ListGarages from '../Offertant/ListGarages';
 import GaragesNavigation from './GaragesNavigation';
 import OffersNav from './OffersNav';
+import DateOffersNav from './DatesOfferNav';
 
 const Tab = createBottomTabNavigator();
 
@@ -50,7 +51,7 @@ function MyTabs(){
           
             <Tab.Screen 
                 name="Reservas" 
-                component={GaragesNavigation } 
+                component={DateOffersNav} 
                 options={{                   
                     tabBarIcon: ({ color, size}) => (
                         <Fontisto name="date" size={30} color="white" />

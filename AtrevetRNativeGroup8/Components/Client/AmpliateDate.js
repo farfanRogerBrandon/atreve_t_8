@@ -15,6 +15,11 @@ import { FontAwesome } from '@expo/vector-icons';
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation, useRoute } from '@react-navigation/native';
+
+
+
+import MapViewDirections from 'react-native-maps-directions';
+
 const AmpliateDate = () => {
 
 
@@ -80,7 +85,20 @@ const AmpliateDate = () => {
                     </Marker>
 
 
+                    <MapViewDirections
 
+                        origin={userLocation}
+
+                        destination={garageLocation}
+                        apikey="AIzaSyCPxGM_Coema3d1JidFraPMQ1jXzI5xKWo"
+
+                        strokeWidth={3}
+
+                        strokeColor="#0000FF"
+
+                    >
+
+                    </MapViewDirections>
 
                 </MapView>
 

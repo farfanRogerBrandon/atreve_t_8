@@ -5,7 +5,12 @@ const TraduceRentalStatus = (status) => {
         return "Auto Ingresado";
     } else if (status === 2) {
         return "Servicio Finalizado";
-    } else {
+    } 
+    else if (status ==3){
+        return "Servicio Finalizado y calificado";
+
+    }
+    else {
         return "Estado no reconocido";
     }
 }
