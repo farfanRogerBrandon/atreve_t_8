@@ -1,11 +1,19 @@
 import React, { useState } from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, StatusBar } from 'react-native';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'; // Importar funciones de autenticación de Firebase
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { appFirebase } from './Data/firebaseConfig'; // Importar la configuración de Firebase
 import { setUserLogued } from "./Data/usersdata"
 import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
+
+import { GoogleAuthProvider, onAuthStateChanged, signInWithCredential } from 'firebase/auth';
+import * as Google from 'expo-auth-session/providers/google';
+import * as WebBrowser from 'expo-web-browser';
+
+WebBrowser.maybeCompleteAuthSession();
+
 const auth = getAuth(appFirebase); // Obtener la instancia de autenticación de Firebase
 const db = getFirestore(appFirebase);
 
@@ -13,7 +21,11 @@ const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-const n = useNavigation();
+  const n = useNavigation();
+  const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
+    clientId: '233656417186-81up989jhsno94khcv141m4gtk4crt52.apps.googleusercontent.com',
+    redirectUri: `com.anonymous.AtrevetRNativeGroup8`,
+  });
   const handleLogin = async () => {
     try {
       // Iniciar sesión con el correo electrónico y la contraseña proporcionados
@@ -44,6 +56,13 @@ const n = useNavigation();
       setErrorMessage('Credenciales inválidas. Por favor, inténtalo de nuevo.');
     }
   };
+  
+  if (response?.type === 'success') {
+    const { id_token } = response.params;
+    const credential = GoogleAuthProvider.credential(id_token);
+    signInWithCredential(auth, credential);
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Hola!</Text>
@@ -78,6 +97,11 @@ const n = useNavigation();
 
       <TouchableOpacity onPress={()=>{n.navigate("SignUpScreen")}} style={styles.button}>
         <Text style={styles.buttonText}>Crear cuenta/No tienes una cuenta??</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => promptAsync()} style={styles.googleButton}>
+        <AntDesign name="google" size={30} color="white" />
+        <Text style={styles.googleButtonText}>Sign In with Google</Text>
       </TouchableOpacity>
 
       <StatusBar style="auto" />
@@ -135,6 +159,22 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 18,
     fontWeight: '500',
+  },
+  googleButton: {
+    backgroundColor: '#4285F4',
+    width: '90%',
+    padding: 10,
+    borderRadius: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  googleButtonText: {
+    fontWeight: 'bold',
+    color: 'white',
+    fontSize: 17,
+    marginLeft: 15,
   },
 });
 
