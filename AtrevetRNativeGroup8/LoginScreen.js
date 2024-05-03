@@ -9,12 +9,13 @@ import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from "expo-auth-session/providers/google"
+import {auth} from "./firebaseConfig";
 
 import { GoogleAuthProvider, onAuthStateChanged, signInWithCredential } from 'firebase/auth';
 
 WebBrowser.maybeCompleteAuthSession();
 
-const auth = getAuth(appFirebase); // Obtener la instancia de autenticación de Firebase
+
 const db = getFirestore(appFirebase);
 
 const LoginScreen = () => {
@@ -27,6 +28,8 @@ const LoginScreen = () => {
 
     androidClientId:"233656417186-81up989jhsno94khcv141m4gtk4crt52.apps.googleusercontent.com"
   });
+
+
   const handleLogin = async () => {
     try {
       // Iniciar sesión con el correo electrónico y la contraseña proporcionados

@@ -1,6 +1,7 @@
 
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import { getAuth } from "firebase/auth";
 
 
 const firebaseConfig = {
@@ -16,5 +17,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+export const auth = getAuth(app);
 
 //Android: "233656417186-81up989jhsno94khcv141m4gtk4crt52.apps.googleusercontent.com"
