@@ -24,16 +24,13 @@ namespace AtrevetGroup8.Models
                     Height = data.ContainsKey("height") && data["height"] is long ? (int)(long)data["height"] : 0,
                     Length = data.ContainsKey("length") && int.TryParse(data["length"].ToString(), out int lengthValue) ? lengthValue : 0,
                     OfferorId = data.ContainsKey("offerorId") && data["offerorId"] is string ? (string)data["offerorId"] : null,
-                    Rating = data.ContainsKey("rating") && data["rating"] is double ? (double)data["rating"] : 0.0,
+                    Rating = data.ContainsKey("rating") && data["rating"] is long ? (long)data["rating"] : 0,
                     Spaces = data.ContainsKey("spaces") && int.TryParse(data["spaces"].ToString(), out int spacesValue) ? spacesValue : 0,
                     Width = data.ContainsKey("width") && data["width"] is string ? int.Parse((string)data["width"]) : 0,
                     Location = data.ContainsKey("location") && data["location"] != null ? ConvertToLocation(data["location"]) : null,
                     TimeTable = data.ContainsKey("timeTable") ? ConvertToTimeTable(data["timeTable"]) : null
-                    // Asigna otros campos de manera similar...
+
                 };
-
-
-
                 try
                 {
                     Garages.Add(garage);
