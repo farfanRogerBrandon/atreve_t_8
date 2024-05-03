@@ -97,6 +97,11 @@ const NegociationClient = () => {
           n.replace("HomeDates");
         }
 
+        if(doc.data().status == 2 ){
+          Alert.alert("Se le ha aceptado la oferta");
+          n.replace("HomeDates");
+        }
+
       }
 
 
@@ -148,8 +153,9 @@ const NegociationClient = () => {
       offer.data.cost = currentPrice;
         let res = await AcceptOffer(offer.id, offer);
         if(res){
-          Alert.alert("Se ha guardado");
           n.replace("HomeDates");
+
+          Alert.alert("Se ha guardado");
         }
         else{
        Alert.alert("Error2");

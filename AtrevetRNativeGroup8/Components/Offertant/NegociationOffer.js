@@ -95,6 +95,11 @@ const NegociationOffer = () => {
           Alert.alert("Se le ha rechazado");
           n.replace("HomeOffers");
         }
+        if(doc.data().status == 2 ){
+          n.replace("HomeOffers");
+
+          Alert.alert("Se le ha aceptado la oferta");
+        }
 
       }
 
@@ -147,7 +152,10 @@ const NegociationOffer = () => {
     try {
         let res = await AcceptOffer(offer.id, offer);
         if(res){
+          n.replace("HomeOffers");
+
           Alert.alert("Se ha guardado");
+
         }
         else{
        Alert.alert("Error2");
