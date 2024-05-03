@@ -1,12 +1,13 @@
-﻿using Google.Cloud.Firestore;
+﻿using Firebase.Auth;
+using Google.Cloud.Firestore;
 
 namespace AtrevetGroup8.Models
 {
     public class GarageImpl : FireBaseConnection
     {
-        public async Task<List<Grage>> GetGarage()
+        public async Task<List<(Grage, string, double)>> GetGarage()
         {
-            List<Grage> Garages = new List<Grage>();
+            List<(Grage, string,double)> Garages = new List<(Grage, string, double)>();
 
             QuerySnapshot querySnapshot = await db.Collection("grage").GetSnapshotAsync();
 
@@ -33,7 +34,9 @@ namespace AtrevetGroup8.Models
                 };
                 try
                 {
-                    Garages.Add(garage);
+                    double promedio = await PromedioRentaGarage(documentSnapshot.Reference);
+                    string propietario = await GetPropietario(documentSnapshot.GetValue<string>("ofid"));
+                    Garages.Add((garage, propietario, promedio));
 
                 }
                 catch (Exception ex)
@@ -165,6 +168,39 @@ namespace AtrevetGroup8.Models
             }
         }
 
+        public async Task<double> PromedioRentaGarage(DocumentReference garageId)
+        {
+            QuerySnapshot rentalSnapshot = await db.Collection("rental")
+                                                    .WhereEqualTo("garageId", garageId)
+                                                    .WhereEqualTo("status", 3)
+                                                    .GetSnapshotAsync();
+
+            double totalRenta = 0;
+            int totalRentas = 0;
+
+            foreach (DocumentSnapshot rentalDocument in rentalSnapshot.Documents)
+            {
+                double promedio = rentalDocument.GetValue<double>("totalAccordedPrice");
+                totalRenta += promedio;
+                totalRentas++;
+            }
+
+            double promedioRenta = totalRentas > 0 ? totalRenta / totalRentas : 0;
+
+            return promedioRenta;
+        }
+
+        public async Task<string> GetPropietario(string nombre)
+        {
+
+            DocumentSnapshot ownerSnapshot = await db.Collection("user").Document(nombre).GetSnapshotAsync();
+
+            string names = ownerSnapshot.GetValue<string>("names");
+            string lastName = ownerSnapshot.GetValue<string>("lastnames");
+
+            return names + " " + lastName ;
+
+        }
 
     }
 }

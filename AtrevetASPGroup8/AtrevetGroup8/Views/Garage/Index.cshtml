@@ -3,7 +3,7 @@
 *@
 @{
 }
-@model List<AtrevetGroup8.Models.Grage>
+@model List<(AtrevetGroup8.Models.Grage,string,double)>
 
 <div class="container-xl">
     <div class="row g-2 align-items-center new-stilos">
@@ -24,6 +24,7 @@
     <table id="example" class="table dataTables_wrapper display responsive nowrap">
         <thead>
             <tr>
+                <th>Dueño</th>
                 <th>Dirección</th>
                 <th>Disponibilidad</th>
                 <th>Costo</th>
@@ -33,27 +34,29 @@
                 <th>Rating</th>
                 <th>Espacios</th>
                 <th>Horario</th>
+                <th>Precio Promedio</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var parkingSpace in Model)
             {
                 <tr>
-                    <td>@parkingSpace.Address</td>
-                    <td>@parkingSpace.Availability</td>
-                    <td>@parkingSpace.Cost</td>
-                    <td>@parkingSpace.Description</td>
-                    <td>@parkingSpace.Height</td>
-                    <td>@parkingSpace.Length</td>
-                    <td>@parkingSpace.Rating</td>
-                    <td>@parkingSpace.Spaces</td>
+                    <td>@parkingSpace.Item2</td>
+                    <td>@parkingSpace.Item1.Address</td>
+                    <td>@parkingSpace.Item1.Availability</td>
+                    <td>@parkingSpace.Item1.Cost</td>
+                    <td>@parkingSpace.Item1.Description</td>
+                    <td>@parkingSpace.Item1.Height</td>
+                    <td>@parkingSpace.Item1.Length</td>
+                    <td>@parkingSpace.Item1.Rating</td>
+                    <td>@parkingSpace.Item1.Spaces</td>
                     <td>
                         <ul>
-                            @if (parkingSpace.TimeTable != null)
+                            @if (parkingSpace.Item1.TimeTable != null)
                             {
                                 <ul>
 
-                                    @foreach (var entry in parkingSpace.TimeTable)
+                                    @foreach (var entry in parkingSpace.Item1.TimeTable)
                                     {
                                         if (entry.Periods != null && entry.Periods.Count > 0)
                                         {
@@ -74,6 +77,9 @@
 
                             }
                         </ul>
+                    </td>
+                    <td>
+                        @parkingSpace.Item3
                     </td>
                 </tr>
             }

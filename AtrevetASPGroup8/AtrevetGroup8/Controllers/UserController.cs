@@ -35,6 +35,9 @@ namespace AtrevetGroup8.Controllers
             await userImpl.DeleteLogicUser(id);
 
             return RedirectToAction(nameof(Index));
+            
+        }
+
         public async Task<ActionResult> TopOffers()
         {
             UserImpl user = new UserImpl();
