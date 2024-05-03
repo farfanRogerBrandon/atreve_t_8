@@ -7,7 +7,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import stylesMap from "../../Styles/GarageRequest"
 //import DateTimePicker from 'react-native-modal-datetime-picker';
 import DateTimePicker from "@react-native-community/datetimepicker"
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { SendOffer, VerifyReservesByDate, getAllGarages, getCarsByUser } from '../../Data/GetAllGarages';
 import { GetDateTraducedWithOutH, compareDate, getDATEfromTime, getIINDEX } from '../../Tools/TransformDate';
 import { FontAwesome } from '@expo/vector-icons';
@@ -41,7 +41,7 @@ const AmpliateDate = () => {
             <View style={[stylesMap.myMapContainer3, { height: RFValue(555) }]}>
                 <MapView
 
-
+                        provider={PROVIDER_GOOGLE}
                     style={[stylesMap.MyMap2, { height: RFValue(555) }]}
                     initialRegion={{
                         latitude: userLocation.latitude
@@ -90,7 +90,7 @@ const AmpliateDate = () => {
                         origin={userLocation}
 
                         destination={garageLocation}
-                        apikey="AIzaSyCPxGM_Coema3d1JidFraPMQ1jXzI5xKWo"
+                        apikey="AIzaSyB3RXK-BKTZWEr5MuavjHJMKd32UpRtVm8"
 
                         strokeWidth={3}
 

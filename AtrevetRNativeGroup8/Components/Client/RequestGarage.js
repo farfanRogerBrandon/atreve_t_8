@@ -7,7 +7,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import stylesMap from "../../Styles/GarageRequest"
 //import DateTimePicker from 'react-native-modal-datetime-picker';
 import DateTimePicker from "@react-native-community/datetimepicker"
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { SendOffer, VerifyReservesByDate, getAllGarages, getCarsByUser } from '../../Data/GetAllGarages';
 import { GetDateTraducedWithOutH, compareDate, getDATEfromTime, getIINDEX } from '../../Tools/TransformDate';
 import { FontAwesome } from '@expo/vector-icons';
@@ -385,6 +385,8 @@ const RequestGarage = () => {
             <Text style={{ color: "white", fontWeight: "bold", fontSize: RFValue(20), alignSelf: "center" }}>Escoja un Garaje</Text>
             <View style={[stylesMap.myMapContainer3, { height: RFValue(heightMap) }]}>
                 <MapView
+
+provider={PROVIDER_GOOGLE}
                     onPress={() => {
                         if (heightMap != 550) {
                             setHeight(550);

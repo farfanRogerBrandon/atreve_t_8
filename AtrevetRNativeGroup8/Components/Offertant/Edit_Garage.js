@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert  } from 'react-native';
 import Create_GarageStyles from '../../Styles/create_garageStyles';
-import MapView, { MapMarker, Marker } from 'react-native-maps';
+import MapView, { MapMarker, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import MapMaker from '../../Tools/Maper';
 import { insertGarage } from '../../Data/GarageInsert';
 import { getGarageById } from '../../Data/GaragesGet';
@@ -187,6 +187,7 @@ const Edit_Garage = (props) => {
 
             <Text style={Create_GarageStyles.label}>Ubicacion en Mapa:</Text>
             <MapView
+            provider={PROVIDER_GOOGLE}
                 style={{ flex: 1 }}
                 onPress={handleMapPress}
                 initialRegion={{

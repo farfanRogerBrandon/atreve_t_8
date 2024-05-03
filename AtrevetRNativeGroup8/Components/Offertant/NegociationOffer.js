@@ -150,6 +150,8 @@ const NegociationOffer = () => {
 
   const acceptOffer =async ()=>{
     try {
+       offer.data.cost = currentPrice;
+
         let res = await AcceptOffer(offer.id, offer);
         if(res){
           n.replace("HomeOffers");
