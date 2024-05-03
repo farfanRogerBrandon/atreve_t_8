@@ -264,6 +264,8 @@ const NegociationOffer = () => {
           <Text style={{ fontWeight: "bold", fontSize: RFValue(16) }} > Lapso: <Text style={{ fontWeight: "normal" }}>{offer.data.startHour.toString().slice(0, -2) + ":" + offer.data.startHour.toString().slice(-2) + " - " + offer.data.endHour.toString().slice(0, -2) + ":" + offer.data.endHour.toString().slice(-2)}</Text> </Text>
           <Text style={{ fontWeight: "bold", fontSize: RFValue(18) }} > Costo Inicial Ofrecido (por el total del lapso): <Text style={{ fontWeight: "normal" }}>{offer.data.cost} Bs</Text> </Text>
           <Text style={{ fontWeight: "bold", fontSize: RFValue(15) }} > Cliente:<Text style={{ fontWeight: "normal" }}>{offer.data.user.names + " " + offer.data.user.lastnames + " - CI:" + offer.data.user.ci} </Text>  </Text>
+          <Text style={{ fontWeight: "bold", fontSize: RFValue(15) }} > Calificación Ciente:<Text style={{ fontWeight: "normal" }}>{offer.data.user.rating} </Text>  </Text>
+          
           <Text style={{ fontWeight: "bold", fontSize: RFValue(16) }} > Vehículo: <Text style={{ fontWeight: "normal" }}>{offer.data.vehicle.description}</Text> </Text>
 
 

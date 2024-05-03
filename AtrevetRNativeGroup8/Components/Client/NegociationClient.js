@@ -260,6 +260,8 @@ const NegociationClient = () => {
           <Text style={{ fontWeight: "bold", fontSize: RFValue(16) }} > Descripción: <Text style={{ fontWeight: "normal" }}>{offer.data.garage.description}</Text> </Text>
           <Text style={{ fontWeight: "bold", fontSize: RFValue(16) }} > Costo/Hora: <Text style={{ fontWeight: "normal" }}>{offer.data.garage.cost} Bs</Text> </Text>
           <Text style={{ fontWeight: "bold", fontSize: RFValue(16) }} > Dirección: <Text style={{ fontWeight: "normal" }}>{offer.data.garage.address}</Text> </Text>
+          <Text style={{ fontWeight: "bold", fontSize: RFValue(16) }} > Estado actual: <Text style={{ fontWeight: "normal" }}>{offer.data.garage.avialability}</Text> </Text>
+          
           <Text>______</Text>
           <Text style={{ fontWeight: "bold", fontSize: RFValue(18) }} > OFERTA INICIAL: </Text>
           <Text style={{ fontWeight: "bold", fontSize: RFValue(16) }} > Fecha: <Text style={{ fontWeight: "normal" }}>{}</Text> </Text>
