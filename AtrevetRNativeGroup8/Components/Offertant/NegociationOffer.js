@@ -155,8 +155,9 @@ const NegociationOffer = () => {
         let res = await AcceptOffer(offer.id, offer);
         if(res){
           n.replace("HomeOffers");
-
           Alert.alert("Se ha guardado");
+
+
 
         }
         else{

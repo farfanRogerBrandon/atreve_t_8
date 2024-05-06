@@ -12,9 +12,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const ListGarages = (props) => {
     const [data, setData] = useState([]);
 
-    const getGaragesList = async () => {
+    const getGaragesList = async (id) => {
         try {
-            let newData = await getGarages(myuser.id)
+            let newData = await getGarages(id)
             setData(newData);
             console.log(newData);
         } catch (error) {
@@ -41,7 +41,7 @@ const ListGarages = (props) => {
       muser = await AsyncStorage.getItem("user");
       let muserJson = muser ? JSON.parse(muser) : null;
       setuser(muserJson);
-      await getGaragesList();
+      await getGaragesList(muserJson.id);
     }
     catch (e) {
       console.error(e);
@@ -50,7 +50,7 @@ const ListGarages = (props) => {
 
   useEffect(()=>{
     getLocalUser();
-  }, [data])
+  }, [])
 
     const renderItem = ({ item, index }) => {
         return (

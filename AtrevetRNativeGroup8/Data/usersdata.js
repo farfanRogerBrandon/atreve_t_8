@@ -1,4 +1,4 @@
-import { getFirestore, setDoc, doc} from "firebase/firestore";
+import { getFirestore, setDoc, doc, getDoc} from "firebase/firestore";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { appFirebase } from "./firebaseConfig";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -30,4 +30,30 @@ const createuser = async (user) => {
  const setUserLogued= async(user) =>{
     await AsyncStorage.setItem('user', JSON.stringify(user))
   }
-export { createuser, setUserLogued };
+
+
+  
+const creategoogleuser = async (i, dt) => {
+  
+         const id = i;
+        let d = await getDoc(doc(db, "user", id));
+        if(d.exists()){
+            if(d.data().state ==1){
+                return true;
+
+            }
+        }
+        else{
+            
+            await setDoc(doc(db, "user", id), dt);
+            return true;
+
+        }
+       
+
+
+
+ 
+     
+ };
+export { createuser, setUserLogued, creategoogleuser };

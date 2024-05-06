@@ -30,7 +30,7 @@ const Create_Car = (props) => {
             await insertCars(car);
             Alert.alert('Registrado', 'El auto se registro con exito');
             console.log('Car inserted successfully:', car);
-            props.navigation.navigate('ListCars');
+            props.navigation.replace('ListCars');
         } catch {
             Alert.alert('Error', 'El auto no se registro');
             console.error('Error inserting car:', error);
@@ -57,7 +57,7 @@ const Create_Car = (props) => {
 
   useEffect(()=>{
     getLocalUser();
-  })
+  },[])
   
   return (
     <ScrollView contentContainerStyle={Create_CarStyles.scrollViewContent}>
@@ -77,7 +77,7 @@ const Create_Car = (props) => {
             <Text style={Create_CarStyles.label}>Altura del Auto:</Text>
             <TextInput
                 style={Create_CarStyles.input}
-                placeholder="Altura del auto"
+                placeholder="Altura del auto (m)"
                 value={height}
                 onChangeText={text => setHeight(text)}
                 keyboardType="numeric"
@@ -95,7 +95,7 @@ const Create_Car = (props) => {
             <Text style={Create_CarStyles.label}>Largo del auto:</Text>
             <TextInput
                 style={Create_CarStyles.input}
-                placeholder="Largo del Auto"
+                placeholder="Largo del Auto (m)"
                 value={length}
                 onChangeText={text => setLength(text)}
                 keyboardType="numeric"

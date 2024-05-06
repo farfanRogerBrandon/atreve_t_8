@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "AtrevetRNativeGroup8",
-    "slug": "AtrevetRNativeGroup8",
+    "slug": "atrevet",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -27,14 +27,15 @@
           "apiKey": "AIzaSyB3RXK-BKTZWEr5MuavjHJMKd32UpRtVm8"
         }
       },
-      "package": "com.pem19.AtrevetRNativeGroup8"
+      "package": "com.atrevet.t"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "scheme": "atrevet",
     "extra": {
       "eas": {
-        "projectId": "0d0d21c1-d71d-40c9-8ab8-2b5cde243392"
+        "projectId": "66f99abf-3c95-4b86-9368-4ce69a0996de"
       }
     }
   }

@@ -21,9 +21,9 @@ const ListCars = (props) => {
         }
     };
 
-    const getCarsList = async()=>{
+    const   getCarsList = async(id)=>{
         try {
-            let newData = await getCars(myuser.id)
+            let newData = await getCars(id)
             setData(newData);
             console.log(newData);
         } catch (error) {
@@ -39,7 +39,7 @@ const ListCars = (props) => {
       muser = await AsyncStorage.getItem("user");
       let muserJson = muser ? JSON.parse(muser) : null;
       setuser(muserJson);
-      await getCarsList();
+      await getCarsList(muserJson.id);
     }
     catch (e) {
       console.error(e);
@@ -48,7 +48,7 @@ const ListCars = (props) => {
 
   useEffect(()=>{
     getLocalUser();
-  }, [data]);
+  }, []);
 
     const renderItem = ({item, index}) => {
         return(

@@ -497,6 +497,10 @@ provider={PROVIDER_GOOGLE}
                                 </Text>
 
                                 <Text style={{ margin: 8, fontSize: RFValue(16), color: "#00c0a9", fontWeight: "bold" }} >
+                                    Disponibilidad Actual: {garage.data().avialability}
+                                </Text>
+
+                                <Text style={{ margin: 8, fontSize: RFValue(16), color: "#00c0a9", fontWeight: "bold" }} >
                                     Dirección: {garage.data().address}
                                 </Text>
 

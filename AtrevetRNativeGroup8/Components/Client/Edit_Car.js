@@ -56,7 +56,7 @@ const Edit_Car = (props) => {
             await updateCarById(props.route.params.carId, carUpdated);
             Alert.alert('Actualizado', 'Los datos del auto se actualizaron con éxito');
             console.log('Car updated successfully:', carUpdated);
-            props.navigation.navigate('ListCars');
+            props.navigation.replace('ListCars');
         } catch (error) {
             Alert.alert('Error', 'Los datos del auto no se pudieron actualizar');
             console.error('Error updating car:', error);

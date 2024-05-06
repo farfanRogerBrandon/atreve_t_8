@@ -76,9 +76,8 @@ const SignUpScreen = () => {
                   const formattedText = text.replace(/\D/g, '');
                   setFormData(prevState => ({ ...prevState, [key]: formattedText }));
                 } else if (key === 'names' || key === 'lastnames') {
-                  // Eliminar caracteres especiales y convertir a mayúsculas
-                  const formattedText = text.replace(/[^a-zA-Z\sñÑ]/g, '').toUpperCase();
-                  setFormData(prevState => ({ ...prevState, [key]: formattedText }));
+                  //const formattedText = text.replace(/[^a-zA-Z\sñÑ]/g, '').toUpperCase();
+                  setFormData(prevState => ({ ...prevState, [key]: text }));
                 } else {
                   setFormData(prevState => ({ ...prevState, [key]: text }));
                 }

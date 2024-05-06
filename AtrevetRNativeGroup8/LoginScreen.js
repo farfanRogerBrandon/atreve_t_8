@@ -1,21 +1,84 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'; // Importar funciones de autenticación de Firebase
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { appFirebase } from './Data/firebaseConfig'; // Importar la configuración de Firebase
-import { setUserLogued } from "./Data/usersdata"
+import { creategoogleuser, setUserLogued } from "./Data/usersdata"
 import { useNavigation } from '@react-navigation/native';
+
+import * as WebBrowser from "expo-web-browser";
+import * as Google from "expo-auth-session/providers/google.js";
+import { GoogleAuthProvider,onAuthStateChanged, signInWithCredential } from 'firebase/auth';
+import { AntDesign } from '@expo/vector-icons';
+
 const auth = getAuth(appFirebase); // Obtener la instancia de autenticación de Firebase
 const db = getFirestore(appFirebase);
+
+WebBrowser.maybeCompleteAuthSession();
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+
+  const [request, response, myMethod ] =  Google.useAuthRequest({
+    iosClientId:"838277525434-lk0omg23t69gm761k2ct90op2djjqqfv.apps.googleusercontent.com"
+    , androidClientId:"160580814948-uu4enf91if7fpt24ua85ften6fpo8o17.apps.googleusercontent.com"
+  });
+
+  useEffect(()=>{
+    if( response?.type==="success"){
+      const{id_token}= response.params;
+      const credential = GoogleAuthProvider.credential(id_token);
+    
+
+      signInWithCredential(getAuth(appFirebase),credential);
+
+      const unsub= onAuthStateChanged(getAuth(appFirebase), async(user)=>{
+
+        if(user){
+          let dt ={
+            names: user.displayName.split(" ")[0],
+            lastnames: user.displayName.split(" ")[1],
+            ci:"1201111",
+            cellphone: user.phoneNumber,
+            mail: user.email,
+            rating:3,
+            state:1,
+            role:"client"
+
+
+        }
+       let r= await creategoogleuser(user.uid, dt);
+        if(r){
+          let muser = {
+            id: user.uid,
+            data:dt
+          }
+          await setUserLogued(muser);
+          Alert.alert("Éxito", "Bienvenido");
+          n.replace("ClientNavigation");
+
+
+        }
+        else{
+          Alert.alert("error", "No seleccionó cuenta");
+
+        }
+
+        }
+        return ()=>unsub();
+      })
+    }
+    
+  },[response])
+
 const n = useNavigation();
   const handleLogin = async () => {
     try {
+
+      //160580814948-uu4enf91if7fpt24ua85ften6fpo8o17.apps.googleusercontent.com
       // Iniciar sesión con el correo electrónico y la contraseña proporcionados
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
@@ -68,17 +131,18 @@ const n = useNavigation();
         autoCapitalize="none"
       />
 
-      <TouchableOpacity onPress={() => {}} style={styles.button}>
-        <Text style={styles.buttonText}>Olvidaste tu contraseña?</Text>
-      </TouchableOpacity>
+    
 
       <TouchableOpacity onPress={handleLogin} style={styles.loginButton}>
         <Text style={styles.loginButtonText}>Entrar</Text>
       </TouchableOpacity>
 
+      <TouchableOpacity onPress={()=>myMethod()} ><Text style={[styles.loginButton,{backgroundColor:"#26798e", color:"white"}]}> <AntDesign name="google" size={28} color="white" /> Continuar con Google</Text></TouchableOpacity>
+
       <TouchableOpacity onPress={()=>{n.navigate("SignUpScreen")}} style={styles.button}>
         <Text style={styles.buttonText}>Crear cuenta/No tienes una cuenta??</Text>
       </TouchableOpacity>
+
 
       <StatusBar style="auto" />
     </View>

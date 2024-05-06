@@ -114,7 +114,7 @@ const Edit_Garage = (props) => {
             await updateGarageById(props.route.params.garageId, garageUpdated);
             Alert.alert('Actualizado', 'Los datos del garaje se actualizaron con éxito');
             console.log('Garage updated successfully:', garageUpdated);
-            props.navigation.navigate('ListGarages');
+            props.navigation.replace('ListGarages');
         } catch (error) {
             Alert.alert('Error', 'Los datos del garaje no se pudieron actualizar');
             console.error('Error updating garage:', error);
@@ -130,7 +130,7 @@ const Edit_Garage = (props) => {
                 <Text style={Create_GarageStyles.heading}>Edita tu Garaje</Text>
             </View>
 
-            <Text style={[Create_GarageStyles.label]}>Costo:</Text>
+            <Text style={[Create_GarageStyles.label]}>Costo base/hora:</Text>
             <TextInput
                 style={Create_GarageStyles.input}
                 placeholder="Costo"
@@ -148,7 +148,7 @@ const Edit_Garage = (props) => {
                 keyboardType="numeric"
             />
 
-            <Text style={Create_GarageStyles.label}>Altura del garaje:</Text>
+            <Text style={Create_GarageStyles.label}>Altura/espacio del garaje (mts):</Text>
             <TextInput
                 style={Create_GarageStyles.input}
                 placeholder="Altura del garaje"
@@ -157,7 +157,7 @@ const Edit_Garage = (props) => {
                 keyboardType="numeric"
             />
 
-            <Text style={Create_GarageStyles.label}>Ancho del garaje:</Text>
+            <Text style={Create_GarageStyles.label}>Ancho/espacio del garaje (mts):</Text>
             <TextInput
                 style={Create_GarageStyles.input}
                 placeholder="Ancho del garaje (m)"
@@ -166,10 +166,10 @@ const Edit_Garage = (props) => {
                 keyboardType="numeric"
             />
 
-            <Text style={Create_GarageStyles.label}>Largo del garaje:</Text>
+            <Text style={Create_GarageStyles.label}>Largo/espacio del garaje (mts):</Text>
             <TextInput
                 style={Create_GarageStyles.input}
-                placeholder="Largo del Auto"
+                placeholder="Largo del garaje"
                 value={length}
                 onChangeText={text => setLength(text)}
                 keyboardType="numeric"
@@ -178,7 +178,7 @@ const Edit_Garage = (props) => {
             <Text style={Create_GarageStyles.label}>Descripcion:</Text>
             <TextInput
                 style={[Create_GarageStyles.textArea]}
-                placeholder="Descripcion del Auto"
+                placeholder="Descripcion del Garaje"
                 value={description}
                 onChangeText={text => setDescription(text)}
                 multiline={true} // Enable multi-line
