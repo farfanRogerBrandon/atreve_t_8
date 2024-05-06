@@ -1,0 +1,132 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model List<(AtrevetGroup8.Models.User, int, double,int, int)>
+
+
+<div class="container-xl">
+    <div class="row g-2 align-items-center new-stilos">
+        <div class="mx-3 col titulo-Header">
+            <!-- Page pre-title -->
+            <div class="page-pretitle">
+                MEJORES
+            </div>
+            <h2 class="page-title">
+                OFERTANTES
+            </h2>
+        </div>
+    </div>
+    <hr class="line" />
+</div>
+
+<div class="container-xl Stilos-tabla">
+    <table id="example" class="table dataTables_wrapper display responsive nowrap">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>CI</th>
+                <th>Correo</th>
+                <th>Teléfono</th>
+                <th>Garages</th>
+                <th>Rating prom</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var userTuple in Model)
+            {
+                <tr>
+                    <td>@userTuple.Item1.names </td>
+                    <td>@userTuple.Item1.lastnames </td>
+                    <td>@userTuple.Item1.ci </td>
+                    <td>@userTuple.Item1.mail </td>
+                    <td>@userTuple.Item1.cellphone </td>
+                    <td>@userTuple.Item2</td>
+                    @if (double.IsNaN(@userTuple.Item3))
+                    {
+                        <td>0</td>
+                    }
+                    else
+                    {
+                        <td>@userTuple.Item3</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@*para la Impresion de Datos*@
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var table = $('#example').DataTable({
+                lengthChange: false,
+                pageLength: 5,
+                order: [[5, 'desc']],
+                buttons: [
+                    {
+                        extend: 'print',
+                        text: '<i class="fas fa-print"></i>', // Icono de impresión
+                        title: 'Datos de Clientes', // Título personalizado para la impresión
+                        customize: function (win) {
+                            // Obtiene la fecha actual
+                            var currentDate = new Date().toLocaleDateString();
+                            // Personaliza el contenido del documento de impresión
+                            $(win.document.body)
+                                .prepend('<h2 style="color: rgb(17, 75, 122); font-family: Arial, sans-serif;">SERVITEC</h2>'); // Agrega un título personalizado antes de la tabla
+                            $(win.document.body)
+                                .prepend('<h6>Fecha: ' + currentDate + '</h6>'); // Agrega la fecha antes de la tabla
+                            // Modifica otros elementos según sea necesario, como agregar estilos adicionales
+                            $(win.document.body).find('h2').css({ 'text-align': 'start', 'font-size': '20px', 'margin-bottom': '20px' }); // Estilos para el título
+                            $(win.document.body).find('h6').css({ 'text-align': 'start', 'font-size': '14px', 'margin-bottom': '20px' }); // Estilos para la fecha
+                            $(win.document.body).find('table').addClass('print-table'); // Agrega una clase CSS para estilos adicionales de la tabla
+                            $(win.document.body).find('table tr').find('td:last-child, th:last-child').remove(); // Elimina la última columna de la tabla en la impresión
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        text: '<i class="fas fa-file-excel"></i>', // Icono de Excel
+                    },
+                    {
+                        extend: 'pdf',
+                        text: '<i class="fas fa-file-pdf"></i>', // Icono de PDF
+                    },
+                    {
+                        extend: 'colvis',
+                        text: '<i class="fas fa-columns"></i> Mostrar/Ocultar Columnas', // Icono de mostrar/ocultar columnas
+                    }
+                ],
+                // Personalización del buscador
+                language: {
+                    // Cambia el texto del campo de búsqueda
+                    search: "Buscar registros:",
+                    // Personaliza el texto para mostrar el rango de registros visualizados
+                    paginate: {
+                        first: "Primero",
+                        last: "Último",
+                        next: "Siguiente",
+                        previous: "Anterior"
+                    },
+                    // Personaliza el texto para el total de registros
+                    info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                    // Personaliza el texto cuando no hay resultados
+                    infoEmpty: "Mostrando 0 a 0 de 0 registros",
+                    // Personaliza el texto cuando se cargan los datos
+                    infoFiltered: "(filtrados de un total de _MAX_ registros)",
+                    // Personaliza el mensaje cuando no hay registros coincidentes
+                    zeroRecords: "No se encontraron registros coincidentes",
+                    // Personaliza el mensaje cuando se cargan los datos
+                    loadingRecords: "Cargando...",
+                }
+            });
+
+            table.buttons().container()
+                .appendTo('#example_wrapper .col-md-6:eq(0)');
+        });
+
+    </script>
+}

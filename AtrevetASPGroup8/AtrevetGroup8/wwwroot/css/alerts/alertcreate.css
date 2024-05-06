@@ -1,0 +1,17 @@
+﻿.swal-button:not([disabled]):hover {
+    background-color: #07711d !important;
+}
+
+.swal-modal {
+    border-radius: 21px !important;
+}
+
+.swal-text {
+    text-align: center !important;
+}
+
+
+.swal-footer {
+    display: flex;
+    justify-content: center;
+}

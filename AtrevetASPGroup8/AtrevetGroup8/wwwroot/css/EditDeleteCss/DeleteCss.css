@@ -1,0 +1,32 @@
+﻿.detail-Car {
+    padding-top: 35px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.actions {
+    display: flex;
+    flex-direction: row;
+}
+
+.card-header {
+    color: #267c98;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-title {
+    color: #da2d06;
+    transition:1s;
+}
+
+@media (max-width:480px){
+    .card-title{
+        font-size:18px;
+        transition:1s;
+        text-align:center;
+    }
+}

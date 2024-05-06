@@ -1,9 +1,12 @@
 ﻿using AtrevetGroup8.Models;
+using AtrevetGroup8.Utils;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace AtrevetGroup8.Controllers
 {
+    [AutorizacionRequerida]
+
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

@@ -1,0 +1,168 @@
+﻿
+.user-panel{
+    cursor:pointer;
+}
+
+.credencial {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: 0.5s;
+}
+
+
+.credencial .role{
+        font-size:12px;
+        opacity:0.8;
+}
+
+.fondo {
+    background-image: url(/img/fondoImg.jpg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+@media (max-width: 600px) {
+    .credencial {
+       display:none;
+       transition:0.5s;
+    }
+}
+.menuUser {
+    position: absolute;
+    top: 80px;
+    right: 10px;
+    padding: 12px 0px;
+    background-color: white;
+    width: 170px;
+    z-index: 5;
+    color: #5d7ca1;
+    border-radius: 24px;
+    transition: 0.5s;
+    visibility: hidden;
+    opacity: 0;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+    .menuUser.active {
+        top: 60px;
+        visibility: visible;
+        opacity: 1;
+    }
+
+
+    .menuUser::before {
+        content: '';
+        position: absolute;
+        top: -9px;
+        right: 20px;
+        width: 20px;
+        height: 20px;     
+        transform: rotate(45deg);
+        z-index: 4;
+        background-color: white;
+    }
+
+
+
+
+
+
+.menuUser h3{
+    width:100%;
+    text-align:center;
+    font-size:15px;
+    padding: 10px 0;
+    font-weight:500;
+    font-size:18px;
+    line-height: 1.2em;
+}
+
+    .menuUser h3 span {
+        font-size: 14px;
+        color: #132238;
+        font-weight: 400;
+    }
+
+    .menuUser ul{
+       
+        padding:1px;
+    }
+
+        .menuUser ul li {
+            list-style: none;
+            padding: 13px 18px;
+            display: flex;
+            align-items: center;
+            color: #a9afb1;
+        }
+
+            .menuUser ul li a {
+                display: inline-block;
+                text-decoration: none;
+                color: #5a636d;
+                font-weight: 400;
+                transition: 0.3s;
+                margin-left: 7px;
+                font-family: "Inter var", Roboto, Helvetica, Arial, sans-serif;
+            }
+
+            .menuUser ul li a:hover {
+                color: #024a68;
+                cursor: pointer;
+            }
+            .menuUser ul li:hover {
+                color: #075270;
+                cursor: pointer;
+                background-color: #f1f1f1;
+            }
+
+
+
+.linea-U{
+    margin:0px;
+}
+
+
+.main-sidebar {
+    background-color: #364E68;
+}
+
+.sidebar {
+    background-color: #19212b;
+}
+
+
+.nav-header {
+    color: #7FC7D9;
+}
+
+.brand-text {
+    color: #CDE3EB;
+}
+
+
+
+.header-noti{
+    font-size:25px;
+}
+
+.badge {
+    font-size: 8px !important;
+    background-color:red;
+}
+
+.user-panel {
+    margin-right: 11px;
+    margin-top: 2px;
+    margin-left: 3px;
+}
+
+.nav-pills .nav-link {
+    color:white !important;
+}
+
+.nav-pills .nav-link:not(.active):hover {
+    color: #4182a5!important;
+}
